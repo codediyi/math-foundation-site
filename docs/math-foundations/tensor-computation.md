@@ -1,229 +1,364 @@
 # 张量运算
 
-> 用轴语义和张量收缩消除 Transformer shape bug。
+> 张量运算的核心不是“几维数组”，而是每一轴的语义。Transformer 里的大部分实现 bug 都不是数学公式错，而是 batch、head、sequence、feature 轴对错了。
 
 ## 学习目标
 
-- 理解 batch、head、sequence、feature 轴。
-- 能用 einsum 写 attention logits。
-- 能把公式转成 PyTorch shape flow。
+- 能解释标量、向量、矩阵、三维张量、四维张量的 shape 和轴语义。
+- 能熟练读写 `reshape`、`view`、`transpose`、`permute`、`contiguous`、broadcast。
+- 能用 `matmul` 和 `einsum` 写 attention logits。
+- 能设计 padding mask、causal mask、position bias 的可广播 shape。
+- 能画出 Transformer 从 embedding 到 attention 输出的 shape flow。
 
-## 这一章为什么重要
+## 从一个最小例子开始
 
-Transformer bug 很多来自形状错误。公式里的 \(QK^\top\) 在代码中通常是四维张量的最后两维矩阵乘法，必须理解轴语义。
+语言模型输入通常是 token 序列。embedding 后得到：
 
-很多学习者会把这一章当成“背景知识”，但在 Transformer 里它通常直接对应某个可观察对象：张量形状、logits 尺度、attention 权重、梯度范数、训练曲线、显存访问或长上下文检索能力。学习时不要只问“这个定义是什么”，还要问“它在模型里被哪个张量承载、在哪一步影响实验结果”。
+\[
+X\in\mathbb{R}^{B\times T\times D}.
+\]
 
-## 先修与学习边界
+读成：`B` 个样本，每个样本 `T` 个 token，每个 token 是 `D` 维向量。
 
-| 维度 | 要求 |
-|---|---|
-| 先修 | 会读基本代数符号，会写 Python/NumPy 或 PyTorch 最小代码 |
-| 本章重点 | 建立可用于 Transformer 分析的最小数学闭环 |
-| 暂不追求 | 完整数学专业证明体系、过度抽象的百科式展开 |
-| 验收方式 | 能解释对象、推导关键式子、写最小代码、做一个可复现实验 |
+```python
+import torch
 
-## 核心概念
+B, T, D = 2, 5, 16
+X = torch.randn(B, T, D)
+print(X.shape)
+```
 
-- 轴语义。
-- reshape、view、transpose、permute。
-- broadcast 和 mask。
-- Hadamard、Kronecker、trace。
-- Einstein summation。
+如果只说“这是三维张量”，信息是不够的。必须说明每一轴是什么。
 
-## 关键公式与直觉
+## 常见轴语义
 
-Attention logits 的指标形式：
+| 符号 | 代码名 | 含义 |
+|---|---|---|
+| \(B\) | `batch` | 一次并行多少样本 |
+| \(T\) 或 \(N\) | `seq_len` | 序列长度/token 数 |
+| \(D\) | `d_model` | hidden size |
+| \(H\) | `num_heads` | attention head 数 |
+| \(d_h\) | `head_dim` | 每个 head 的维度 |
+| \(V\) | `vocab_size` | 词表大小 |
+
+常见 shape：
+
+| 张量 | shape | 含义 |
+|---|---|---|
+| token ids | `(B,T)` | 每个位置的 token 编号 |
+| hidden states | `(B,T,D)` | 每个 token 的向量表示 |
+| Q/K/V before split | `(B,T,D)` | 线性投影后表示 |
+| Q/K/V after split | `(B,H,T,d_h)` | 多头表示 |
+| attention logits | `(B,H,T,T)` | 每个 query 对每个 key 的分数 |
+| attention weights | `(B,H,T,T)` | softmax 后权重 |
+| attention output | `(B,H,T,d_h)` | 每个 head 的输出 |
+
+## reshape：改变形状，不自动改变语义
+
+多头注意力要把 \(D\) 拆成 \(H\times d_h\)：
+
+```python
+B, T, D, H = 2, 5, 16, 4
+dh = D // H
+X = torch.randn(B, T, D)
+Q = X.reshape(B, T, H, dh).transpose(1, 2)
+print(Q.shape)  # (B, H, T, dh)
+```
+
+关键步骤：
+
+1. `(B,T,D)` 变成 `(B,T,H,dh)`。
+2. `transpose(1, 2)` 变成 `(B,H,T,dh)`。
+3. 后续 attention 在最后两维做矩阵乘法。
+
+## transpose 与 permute
+
+`transpose(i, j)` 交换两个维度。`permute` 重新排列所有维度。
+
+```python
+X = torch.randn(2, 5, 4, 8)  # (B,T,H,dh)
+Y = X.transpose(1, 2)         # (B,H,T,dh)
+Z = X.permute(0, 2, 1, 3)     # 同样是 (B,H,T,dh)
+```
+
+常见错误是把 `(B,T,H,dh)` 当成 `(B,H,T,dh)` 用，代码可能能跑，但 attention 语义完全错。
+
+## contiguous 和 view
+
+`transpose` 后的张量内存布局可能不连续。若要用 `view`，常需要：
+
+```python
+Y = X.transpose(1, 2).contiguous().view(2, 4, 5, 8)
+```
+
+更稳妥的初学写法是优先用 `reshape`，但仍要知道它可能触发拷贝。
+
+## 矩阵乘法在高维张量中的规则
+
+对于：
+
+```python
+Q.shape == (B, H, Tq, d)
+K.shape == (B, H, Tk, d)
+```
+
+attention logits：
+
+```python
+S = Q @ K.transpose(-1, -2)
+```
+
+输出：
+
+```python
+S.shape == (B, H, Tq, Tk)
+```
+
+前面的 `B,H` 是批量维，矩阵乘法发生在最后两维：`(Tq,d) @ (d,Tk)`。
+
+## einsum：把公式写成代码
+
+指标形式：
 
 \[
 S_{b,h,i,j}=\sum_d Q_{b,h,i,d}K_{b,h,j,d}.
 \]
 
-这说明收缩的是 feature 轴，保留的是 query 位置和 key 位置。
+代码：
 
-读公式时建议固定三件事：第一，看清每个变量的形状；第二，说明每一步是线性映射、归一化、概率变换还是近似；第三，问这个公式会影响哪个实验指标。只要能做到这三点，绝大多数论文公式就不会停留在“看起来懂了”的状态。
+```python
+S = torch.einsum('bhid,bhjd->bhij', Q, K)
+```
 
-## Transformer 对应关系
+读法：输入都有 `d`，输出没有 `d`，说明对 `d` 求和；`i` 和 `j` 被保留，所以输出是 query-key 位置矩阵。
 
-| 项目 | 内容 |
+## broadcast：自动扩展维度
+
+广播规则从右往左对齐维度。若某一维是 1，可以扩展到目标大小。
+
+```python
+X = torch.randn(2, 5, 16)
+bias = torch.randn(16)
+Y = X + bias
+print(Y.shape)  # (2,5,16)
+```
+
+bias 的 shape `(16,)` 被广播到 `(2,5,16)`。
+
+## mask 的 shape
+
+attention logits shape 通常是 `(B,H,T,T)`。
+
+### causal mask
+
+```python
+T = 5
+causal = torch.tril(torch.ones(T, T)).bool()
+logits = torch.randn(2, 4, T, T)
+logits = logits.masked_fill(~causal, float('-inf'))
+```
+
+`(T,T)` 会广播到 `(B,H,T,T)`。
+
+### padding mask
+
+若 `valid` shape 是 `(B,T)`，表示哪些 token 有效，需要扩展为 `(B,1,1,T)`：
+
+```python
+B, H, T = 2, 4, 5
+valid = torch.tensor([[1,1,1,0,0],[1,1,1,1,0]]).bool()
+mask = valid[:, None, None, :]
+logits = torch.randn(B, H, T, T)
+logits = logits.masked_fill(~mask, float('-inf'))
+```
+
+这里 mask 作用在 key 位置，即最后一维。
+
+## attention shape flow
+
+| 步骤 | shape |
 |---|---|
-| reshape/split | hidden 维切成多个 head |
-| transpose | 调整 matmul 收缩轴 |
-| einsum | 表达 attention logits |
-| broadcast | mask 和 position bias |
+| 输入 hidden | `(B,T,D)` |
+| 线性投影 Q/K/V | `(B,T,D)` |
+| 拆 head | `(B,H,T,d_h)` |
+| logits | `(B,H,T,T)` |
+| mask 后 logits | `(B,H,T,T)` |
+| softmax 权重 | `(B,H,T,T)` |
+| weighted sum | `(B,H,T,d_h)` |
+| 合并 head | `(B,T,D)` |
+| 输出投影 | `(B,T,D)` |
 
-
-## 逐步例题
-
-设 q,k 形状为 \(B,H,N,D\)。`einsum("bhid,bhjd->bhij")` 输出 \(B,H,N,N\)，其中 i 是 query 位置，j 是 key 位置。
-
-完成例题时不要跳步。先写形状，再写等式，再写代码。若某一步无法说明形状，通常说明概念还没有真正对齐到模型实现。
-
-## 关键代码块
+## 最小 attention 代码
 
 ```python
 import torch
-B,H,N,D = 2,4,8,16
-q = torch.randn(B,H,N,D)
-k = torch.randn(B,H,N,D)
-logits = torch.einsum("bhid,bhjd->bhij", q, k) / D**0.5
-print(logits.shape)
+
+B, T, D, H = 2, 5, 16, 4
+dh = D // H
+X = torch.randn(B, T, D)
+Wq = torch.randn(D, D)
+Wk = torch.randn(D, D)
+Wv = torch.randn(D, D)
+
+Q = (X @ Wq).reshape(B, T, H, dh).transpose(1, 2)
+K = (X @ Wk).reshape(B, T, H, dh).transpose(1, 2)
+V = (X @ Wv).reshape(B, T, H, dh).transpose(1, 2)
+
+logits = Q @ K.transpose(-1, -2) / (dh ** 0.5)
+weights = torch.softmax(logits, dim=-1)
+out = weights @ V
+out = out.transpose(1, 2).reshape(B, T, D)
+print(out.shape)
 ```
-
-代码块只追求最小可运行，不追求工程封装。建议复制到 notebook 后逐行打印 shape、均值、方差或误差，确认数学对象和实际张量一致。
-
-## 常见误区
-
-- 把 batch 轴参与矩阵乘法。
-- transpose 的维度写错但广播后没立刻报错。
-- mask 形状不对导致错误位置可见。
-- 只看 tensor rank，不看每个轴的语义。
-
-## 最小练习
-
-- 用 matmul 重写 einsum logits。
-- 给 padding mask 写出可广播形状。
-- 画出 MHA 从 \(B,N,D\) 到 \(B,H,N,D_h\) 的形状变化。
-
-## 检查问题
-
-1. 这个概念在 Transformer 中对应哪个真实张量或实验现象？
-2. 关键公式里的每个变量形状是什么？
-3. 公式里是否隐藏了独立性、归一化、低秩、平滑性或近似假设？
-4. 如果实现错了，最可能表现为 shape error、数值爆炸、梯度异常还是指标下降？
-5. 有没有一个 20 行以内的代码片段可以验证本章直觉？
-
-## 阶段产出
-
-一张 Transformer shape flow 图，覆盖 embedding、QKV、logits、prob、output、FFN。
-
-## 学习路径衔接
-
-之后读“Attention 形状流”。
-
-## 长章学习指南
-
-这一页不要按普通博客的方式快速扫过。建议按三轮阅读完成：第一轮只看标题、表格和公式，建立全局地图；第二轮逐段补齐变量形状和直觉；第三轮把代码复制到 notebook 中运行，记录输出和异常。完成三轮后，再回到“检查问题”部分逐条回答。
-
-### 第一轮：建立对象地图
-
-| 问题 | 记录方式 |
-|---|---|
-| 本章研究的对象是什么 | 写出 3 个关键词 |
-| 对象在 Transformer 中对应哪个模块 | 标出 attention、FFN、LN、位置编码或训练环节 |
-| 本章最核心的公式是什么 | 抄写公式并标注变量形状 |
-| 最小代码验证什么 | 写出输入、输出和期望现象 |
-
-### 第二轮：补齐推导链
-
-阅读公式时，按下面顺序补齐中间步骤：
-
-1. 写出所有变量的形状。
-2. 标出每一步是线性、非线性、归一化、近似还是采样。
-3. 写出这一步是否改变均值、方差、范数、秩或熵。
-4. 说明这一步是否影响梯度传播。
-5. 判断它是否引入额外计算、显存或延迟。
-
-这五步会把 张量运算 从抽象概念变成可检查的模型行为。
-
-### 第三轮：运行最小代码
-
-代码练习不要求一开始就工程化。最小版本只需要满足：
-
-- 输入是随机张量或一个小 toy 数据。
-- 输出能验证本章某个公式或直觉。
-- 打印 shape、均值、方差、范数或误差。
-- 改一个变量后能观察变化。
-
-如果代码不能解释一个数学问题，它只是示例；如果代码能支持或反驳一个假设，它才是实验。
-
-## 分层掌握标准
-
-| 层级 | 能力表现 | 自测问题 |
-|---|---|---|
-| 入门 | 能复述定义和用途 | 这个概念解决什么问题？ |
-| 可用 | 能写出公式和 shape | 变量维度是否全部明确？ |
-| 可实现 | 能写最小代码 | 输出是否符合公式预期？ |
-| 可诊断 | 能解释异常现象 | 数值、梯度或 shape 哪里可能错？ |
-| 可研究 | 能设计 controlled ablation | 哪个变量被改变，哪个变量被固定？ |
-
-学习 张量运算 时，至少达到“可实现”层级再进入下一章。若目标是论文研究，需要达到“可诊断”或“可研究”。
-
-## 典型调试清单
-
-当你在本章相关代码中遇到问题，优先检查下面几项：
-
-1. **shape 是否符合公式**：尤其是 batch、head、sequence、feature 轴。
-2. **数值尺度是否异常**：均值、方差、最大值、最小值是否合理。
-3. **softmax 或归一化是否在正确维度**。
-4. **mask 是否广播到正确位置**。
-5. **梯度是否存在 NaN、Inf 或突然变为 0**。
-6. **实验是否固定随机种子和关键超参**。
-7. **比较方法是否参数量、训练步数和数据一致**。
-
-## 笔记模板
-
-复制下面模板到你的 Obsidian 或 notebook：
-
-```markdown
-# 张量运算 学习笔记
-
-## 一句话直觉
-
-## 核心对象与形状
-
-| 对象 | 形状 | 含义 |
-|---|---|---|
-
-## 关键公式
-
-## 推导步骤
-
-## 最小代码输出
-
-## 常见错误
 
 ## 与 Transformer 的关系
 
-## 本章实验结论
+| 张量操作 | Transformer 中的位置 |
+|---|---|
+| reshape | 拆分/合并 multi-head |
+| transpose | 调整矩阵乘法收缩轴 |
+| broadcast | mask、bias、position bias |
+| einsum | attention logits、特征交互 |
+| softmax dim | query 对 key 的归一化 |
+| contiguous | 高性能实现和 view 安全 |
+
+## 常见误区
+
+- 只看张量 rank，不写每一轴语义。
+- 把 batch 轴或 head 轴错误地参与矩阵乘法。
+- `softmax(dim=1)` 随手写，实际应该沿 key 维 `dim=-1`。
+- padding mask 扩展到 query 维，而不是 key 维。
+- `transpose` 后直接 `view`，忽略内存连续性。
+- `einsum` 输出标签写错，代码能跑但含义错。
+
+## 检查问题
+
+1. `(B,T,D)` 拆成 `(B,H,T,d_h)` 需要哪两步？
+2. `Q @ K.transpose(-1, -2)` 中矩阵乘法发生在哪两维？
+3. padding mask 为什么通常扩成 `(B,1,1,T)`？
+4. `einsum('bhid,bhjd->bhij')` 对哪个维度求和？
+5. softmax 应该沿 logits 的哪一维做？为什么？
+
+## 分层练习
+
+| 层级 | 任务 |
+|---|---|
+| 基础 | 给 5 个 Transformer 张量写 shape 和轴语义 |
+| 推导 | 把 \(S_{bhij}=\sum_dQ_{bhid}K_{bhjd}\) 翻译成 einsum |
+| 实现 | 写最小 multi-head attention shape flow |
+| 诊断 | 故意写错 mask shape，观察广播结果 |
+| 迁移 | 读一个 attention 实现，标注每一行 shape |
+
+## 阶段产出
+
+画一张 Transformer shape flow 图，覆盖 token ids、embedding、Q/K/V、logits、mask、softmax、weighted sum、合并 head、输出投影。每个箭头标出使用的张量操作。
+
+## 教材补充：从公式省略维度到代码完整维度
+
+论文常写：
+
+\[
+\operatorname{Attention}(Q,K,V)=\operatorname{softmax}(QK^\top/\sqrt{d})V.
+\]
+
+代码里至少有四维：
+
+\[
+Q,K,V\in\mathbb{R}^{B\times H\times T\times d}.
+\]
+
+所以公式里的 \(QK^\top\) 实际是：
+
+\[
+S_{b,h,i,j}=\sum_dQ_{b,h,i,d}K_{b,h,j,d}.
+\]
+
+写代码前，必须把省略的 batch/head 维补回来。
+
+## 手推任务：mask 广播检查
+
+logits：
+
+\[
+S\in\mathbb{R}^{B\times H\times T_q\times T_k}.
+\]
+
+padding mask：
+
+\[
+M\in\mathbb{R}^{B\times T_k}.
+\]
+
+为了作用在 key 维，需要变成：
+
+\[
+M'\in\mathbb{R}^{B\times 1\times 1\times T_k}.
+\]
+
+这样会广播到每个 head、每个 query 位置。
+
+## Notebook 实验：验证 matmul 与 einsum
+
+```python
+import torch
+
+B, H, T, d = 2, 3, 4, 5
+Q = torch.randn(B, H, T, d)
+K = torch.randn(B, H, T, d)
+
+s1 = Q @ K.transpose(-1, -2)
+s2 = torch.einsum('bhid,bhjd->bhij', Q, K)
+print(torch.allclose(s1, s2))
 ```
 
-## 进阶练习
+如果不相等，通常是维度顺序或转置写错。
 
-- 把本章公式改写成带 batch 和 head 维度的版本。
-- 找一个相关论文公式，标注它依赖本章哪些概念。
-- 用随机输入构造一个失败案例，并解释失败原因。
-- 把最小代码改成函数，并写 2 个断言检查 shape 和数值范围。
-- 设计一个只改变一个变量的小实验，并记录结果。
+## 易错案例：softmax 维度写错
 
-## 与其它章节的连接
+```python
+logits = torch.randn(2, 4, 5, 5)
+wrong = torch.softmax(logits, dim=1)
+right = torch.softmax(logits, dim=-1)
+print(wrong.sum(dim=-1)[0, 0])
+print(right.sum(dim=-1)[0, 0])
+```
 
-张量运算 不是孤立章节。你应该主动回看这些关系：
+attention 权重应该对 key 维求和为 1，即最后一维。如果 `dim=1`，归一化发生在 head 维，语义错误。
 
-| 连接方向 | 需要回看的内容 |
+## 论文阅读提示
+
+高效 attention 论文中常见 shape 词汇：
+
+| 术语 | shape 关注点 |
 |---|---|
-| 数学对象 | 线性代数、概率统计、矩阵微分 |
-| 实现对象 | 张量运算、Attention 形状流 |
-| 训练对象 | 优化与数值稳定、残差与归一化 |
-| 研究对象 | 高效 Attention、长上下文、结构改进实验 |
+| block/chunk | 序列维被分块 |
+| tile | GPU 计算块，常对应局部矩阵乘法 |
+| KV cache | 通常缓存 `(B,H,T,d)` 的 K/V |
+| grouped-query attention | Q head 数与 KV head 数不同 |
+| sliding window | mask 只允许局部 key 可见 |
+| prefix/past key values | 历史序列维不断增长 |
 
-如果某个连接读不懂，不要继续堆新概念，回到对应基础页补齐。
+## 调试清单
 
-## 复盘问题
+- 每次 reshape 后立刻打印 shape。
+- 每次 transpose 后确认轴语义。
+- 每次 softmax 后检查归一化维度求和是否为 1。
+- 每次 mask 后检查被 mask 的位置是否为 `-inf`。
+- 合并 head 前确认 `(B,H,T,d)` 还是 `(B,T,H,d)`。
+- 写 einsum 时确认消失的标签就是求和维。
 
-完成本章后，用不超过 300 字回答：
+## 章节小测
 
-1. 张量运算 最重要的一个数学对象是什么？
-2. 它在 Transformer 中对应哪个模块或现象？
-3. 哪个公式最值得手推？
-4. 哪段代码最能验证这个公式？
-5. 如果实验失败，你会先排查 shape、数值、梯度还是数据？为什么？
+1. 为什么论文公式常省略 batch/head 维？
+2. padding mask 和 causal mask 分别作用在哪些位置？
+3. grouped-query attention 会改变哪些 head 维 shape？
+4. KV cache 的序列维为什么会随生成增长？
+5. FlashAttention 的分块主要针对哪两个维度？
 
 ## 本章完成标准
 
-- 能把核心公式写在白纸上，不依赖网页。
-- 能解释每个变量的形状和语义。
-- 能运行最小代码并解释输出。
-- 能指出一个常见误区和一个调试方法。
-- 能把本章内容连接到至少一个 Transformer 研究问题。
+- 能把 attention 公式扩写成四维指标形式。
+- 能写出 padding mask 和 causal mask 的可广播 shape。
+- 能用 matmul/einsum 实现同一个 logits。
+- 能独立画出 MHA 的完整 shape flow。
 

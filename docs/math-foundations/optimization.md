@@ -1,37 +1,150 @@
 # 优化与数值稳定
 
-> 用 smoothness、条件数和稳定实现理解训练曲线。
+> 优化回答“参数如何更新”，数值稳定回答“这个更新和计算是否可靠”。很多 Transformer 问题不是模型表达力不足，而是学习率、梯度尺度、归一化、softmax overflow、mixed precision 等细节失控。
 
 ## 学习目标
 
-- 理解 GD、SGD、Adam、momentum 和 weight decay。
-- 掌握 log-sum-exp 和稳定 softmax。
-- 能解释训练发散和梯度异常。
+- 理解 GD、SGD、momentum、Adam、weight decay、warmup、gradient clipping。
+- 能解释学习率过大、梯度爆炸、softmax overflow、NaN 的常见来源。
+- 掌握稳定 softmax、log-sum-exp、cross entropy 的实现直觉。
+- 能记录 loss、grad norm、parameter norm，并用它们诊断训练问题。
+- 能把优化稳定性连接到 Transformer 的 Pre-LN、残差、warmup 和 mixed precision。
 
-## 这一章为什么重要
+## 从一个最小例子开始
 
-很多训练问题不是模型表达力不足，而是尺度和数值问题。Transformer 的 warmup、Pre-LN、DeepNorm、gradient clipping 和 mixed precision 都在控制更新尺度。
+优化的目标是让损失变小。考虑：
 
-很多学习者会把这一章当成“背景知识”，但在 Transformer 里它通常直接对应某个可观察对象：张量形状、logits 尺度、attention 权重、梯度范数、训练曲线、显存访问或长上下文检索能力。学习时不要只问“这个定义是什么”，还要问“它在模型里被哪个张量承载、在哪一步影响实验结果”。
+\[
+L(w)=(w-3)^2.
+\]
 
-## 先修与学习边界
+梯度下降：
 
-| 维度 | 要求 |
-|---|---|
-| 先修 | 会读基本代数符号，会写 Python/NumPy 或 PyTorch 最小代码 |
-| 本章重点 | 建立可用于 Transformer 分析的最小数学闭环 |
-| 暂不追求 | 完整数学专业证明体系、过度抽象的百科式展开 |
-| 验收方式 | 能解释对象、推导关键式子、写最小代码、做一个可复现实验 |
+\[
+w_{t+1}=w_t-\eta\nabla L(w_t).
+\]
 
-## 核心概念
+```python
+w = 0.0
+lr = 0.1
+for step in range(8):
+    loss = (w - 3) ** 2
+    grad = 2 * (w - 3)
+    w -= lr * grad
+    print(step, round(w, 4), round(loss, 4))
+```
 
-- 梯度下降和 SGD。
-- Adam、动量、自适应预条件。
-- L-smooth 和强凸直觉。
-- 条件数。
-- log-sum-exp、overflow、underflow。
+如果学习率合适，loss 下降；如果学习率太大，参数会震荡甚至发散。
 
-## 关键公式与直觉
+## GD 与 SGD
+
+全量梯度下降使用全部数据：
+
+\[
+\nabla L(\theta)=\frac{1}{N}\sum_{i=1}^N\nabla \ell_i(\theta).
+\]
+
+SGD 或 mini-batch SGD 使用一个 batch 估计：
+
+\[
+\hat{g}=\frac{1}{B}\sum_{i\in\mathcal{B}}\nabla \ell_i(\theta).
+\]
+
+| 方法 | 优点 | 问题 |
+|---|---|---|
+| GD | 梯度稳定 | 大数据上太慢 |
+| SGD | 计算便宜，有噪声探索 | 曲线抖动大 |
+| Mini-batch SGD | 工程上折中 | batch size 会影响优化动态 |
+
+## Momentum：让更新有惯性
+
+Momentum 维护速度：
+
+\[
+v_t=\beta v_{t-1}+g_t,
+\quad
+\theta_t=\theta_{t-1}-\eta v_t.
+\]
+
+直觉：如果多个 step 的梯度方向一致，就加速；如果来回震荡，就部分抵消。
+
+## Adam：自适应缩放梯度
+
+Adam 维护一阶矩和二阶矩：
+
+\[
+m_t=\beta_1m_{t-1}+(1-\beta_1)g_t,
+\]
+
+\[
+v_t=\beta_2v_{t-1}+(1-\beta_2)g_t^2.
+\]
+
+更新大致为：
+
+\[
+\theta_t=\theta_{t-1}-\eta\frac{\hat{m}_t}{\sqrt{\hat{v}_t}+\epsilon}.
+\]
+
+直觉：梯度长期很大的维度会被缩小，梯度长期较小的维度会相对放大。但 Adam 不是万能的，学习率、warmup、weight decay 仍然很重要。
+
+## Weight decay 与 L2 正则
+
+AdamW 中常用 decoupled weight decay：
+
+\[
+\theta \leftarrow \theta-\eta\lambda\theta.
+\]
+
+直觉：每一步把参数往 0 拉一点，限制参数范数。它不是简单的“防止过拟合”按钮，也会改变优化路径。
+
+## Warmup：训练早期慢慢加大学习率
+
+Transformer 训练常用 warmup。原因包括：
+
+- 初始参数和 Adam moments 还不稳定。
+- 早期 logits、激活、梯度尺度可能变化剧烈。
+- 直接使用大学习率容易让模型跳到不稳定区域。
+
+线性 warmup：
+
+```python
+def lr_schedule(step, base_lr=3e-4, warmup=1000):
+    if step < warmup:
+        return base_lr * (step + 1) / warmup
+    return base_lr
+```
+
+## 梯度裁剪
+
+梯度范数过大时，更新可能异常。global norm clipping：
+
+\[
+g \leftarrow g \cdot \min\left(1, \frac{c}{\|g\|}\right).
+\]
+
+```python
+import torch
+
+params = [torch.randn(10, requires_grad=True)]
+loss = (params[0] ** 2).sum()
+loss.backward()
+torch.nn.utils.clip_grad_norm_(params, max_norm=1.0)
+print(params[0].grad.norm())
+```
+
+裁剪不是为了让所有梯度都小，而是防止少数异常 batch 造成巨大更新。
+
+## 数值稳定：overflow 和 underflow
+
+指数函数增长很快：
+
+```python
+import torch
+print(torch.exp(torch.tensor(100.0)))
+```
+
+在某些 dtype 下会 overflow。softmax 直接对大 logits 做 `exp` 会出现 inf。
 
 稳定 log-sum-exp：
 
@@ -39,191 +152,231 @@
 \log\sum_i e^{z_i}=m+\log\sum_i e^{z_i-m},\quad m=\max_i z_i.
 \]
 
-这是稳定 softmax 和 cross entropy 的基础。
+因为减去最大值不会改变 softmax 比例。
 
-读公式时建议固定三件事：第一，看清每个变量的形状；第二，说明每一步是线性映射、归一化、概率变换还是近似；第三，问这个公式会影响哪个实验指标。只要能做到这三点，绝大多数论文公式就不会停留在“看起来懂了”的状态。
-
-## Transformer 对应关系
-
-| 项目 | 内容 |
-|---|---|
-| warmup | 训练早期更新尺度控制 |
-| 梯度裁剪 | 异常 batch 防护 |
-| log-sum-exp | 稳定 softmax/CE |
-| 条件数 | 收敛速度和方向不均衡 |
-
-
-## 逐步例题
-
-输入 `[1000,1001,1002]` 时，直接 `exp` 会 overflow；减去最大值不改变 softmax 结果，但让数值可计算。
-
-完成例题时不要跳步。先写形状，再写等式，再写代码。若某一步无法说明形状，通常说明概念还没有真正对齐到模型实现。
-
-## 关键代码块
+## 稳定 softmax
 
 ```python
 import torch
-def stable_softmax(x):
-    z = x - x.max(dim=-1, keepdim=True).values
+
+def stable_softmax(x, dim=-1):
+    z = x - x.max(dim=dim, keepdim=True).values
     e = z.exp()
-    return e / e.sum(dim=-1, keepdim=True)
-print(stable_softmax(torch.tensor([[1000.,1001.,1002.]])))
+    return e / e.sum(dim=dim, keepdim=True)
+
+x = torch.tensor([[1000.0, 1001.0, 1002.0]])
+print(stable_softmax(x))
+print(torch.softmax(x, dim=-1))
 ```
 
-代码块只追求最小可运行，不追求工程封装。建议复制到 notebook 后逐行打印 shape、均值、方差或误差，确认数学对象和实际张量一致。
+PyTorch 内置 `softmax` 已做稳定处理，但自己写实现时必须记住这个技巧。
+
+## 稳定 cross entropy
+
+不要先 softmax 再 log：
+
+```python
+import torch
+import torch.nn.functional as F
+
+logits = torch.tensor([[1000.0, 1001.0, 1002.0]])
+target = torch.tensor([2])
+loss = F.cross_entropy(logits, target)
+print(loss)
+```
+
+`cross_entropy` 内部使用稳定的 log-softmax。手写 `torch.log(torch.softmax(logits))` 更容易数值出错。
+
+## mixed precision 常见问题
+
+混合精度能加速训练、节省显存，但也更容易遇到：
+
+| 问题 | 现象 | 常见处理 |
+|---|---|---|
+| overflow | loss/grad 变 NaN 或 Inf | loss scaling、clip、降低 lr |
+| underflow | 小梯度变 0 | 使用 bf16/fp32 master weights |
+| softmax 不稳定 | attention 出 NaN | stable softmax、mask 检查 |
+| LayerNorm eps 太小 | 方差接近 0 时异常 | 合理设置 eps |
+
+## 训练诊断指标
+
+建议每次训练记录：
+
+| 指标 | 用途 |
+|---|---|
+| train loss | 是否下降、是否震荡 |
+| eval loss | 是否泛化 |
+| grad norm | 是否爆炸或异常变 0 |
+| param norm | 参数是否持续变大 |
+| learning rate | 与 loss 变化对齐分析 |
+| max logits | 判断 softmax 是否过尖 |
+| NaN/Inf count | 及时定位数值错误 |
+
+## Transformer 对应关系
+
+| 优化/稳定概念 | Transformer 中的位置 |
+|---|---|
+| AdamW | 大多数 Transformer 训练默认优化器 |
+| warmup | 训练早期更新尺度控制 |
+| gradient clipping | 防止异常 batch 造成大更新 |
+| stable softmax | attention 和 vocab softmax |
+| log-sum-exp | cross entropy、log likelihood |
+| Pre-LN | 深层训练稳定性 |
+| mixed precision | 大模型训练速度和显存 |
+
+## 逐步例题：学习率导致发散
+
+```python
+for lr in [0.05, 0.5, 1.1]:
+    w = 5.0
+    losses = []
+    for _ in range(8):
+        loss = w ** 2
+        grad = 2 * w
+        w -= lr * grad
+        losses.append(round(loss, 3))
+    print('lr=', lr, losses)
+```
+
+观察：小学习率稳定但慢；中等学习率快；过大学习率发散。
 
 ## 常见误区
 
-- 认为 Adam 会自动解决所有不稳定。
-- 只看 FLOPs，不看 wall-clock 和内存访问。
-- 把 overflow 当成小实现细节。
-- 调参时不记录学习率、warmup 和梯度范数。
-
-## 最小练习
-
-- 实现稳定 softmax 和不稳定 softmax 对比。
-- 在二次函数上比较不同学习率。
-- 记录一个小模型的 loss 与 grad norm。
+- 认为 Adam 会自动解决所有训练不稳定。
+- 只调学习率，不看 grad norm 和 logits 尺度。
+- 手写 `softmax` 忘记减最大值。
+- 把 NaN 当成随机现象，不记录具体 step 和 batch。
+- mixed precision 下不检查 overflow/underflow。
+- weight decay、dropout、label smoothing 混在一起调，无法判断原因。
 
 ## 检查问题
 
-1. 这个概念在 Transformer 中对应哪个真实张量或实验现象？
-2. 关键公式里的每个变量形状是什么？
-3. 公式里是否隐藏了独立性、归一化、低秩、平滑性或近似假设？
-4. 如果实现错了，最可能表现为 shape error、数值爆炸、梯度异常还是指标下降？
-5. 有没有一个 20 行以内的代码片段可以验证本章直觉？
+1. SGD 和 GD 的梯度有什么区别？
+2. Adam 为什么要维护一阶矩和二阶矩？
+3. warmup 解决的是哪类早期训练问题？
+4. gradient clipping 改变的是梯度方向还是尺度？
+5. log-sum-exp 为什么能避免 overflow？
+6. 训练出现 NaN 时，你会先检查哪些指标？
+
+## 分层练习
+
+| 层级 | 任务 |
+|---|---|
+| 基础 | 在 \(w^2\) 上比较 3 个学习率 |
+| 推导 | 推导 stable softmax 减最大值不改变结果 |
+| 实现 | 写 stable softmax 和 stable cross entropy 对比 |
+| 诊断 | 记录一个小模型的 loss、lr、grad norm |
+| 迁移 | 分析 Pre-LN 为什么比 Post-LN 更稳定 |
 
 ## 阶段产出
 
-一页笔记：优化稳定性如何连接学习率、归一化、残差和数值实现。
+写一页“训练稳定性检查表”，包含学习率、warmup、AdamW、weight decay、grad norm、stable softmax、NaN/Inf、mixed precision。每项都要写“可能症状”和“排查方法”。
 
-## 学习路径衔接
+## 教材补充：把训练问题分成三类
 
-之后读“残差与归一化”和“高效 Attention”。
+训练异常不要只说“模型不收敛”。先分成三类：
 
-## 长章学习指南
-
-这一页不要按普通博客的方式快速扫过。建议按三轮阅读完成：第一轮只看标题、表格和公式，建立全局地图；第二轮逐段补齐变量形状和直觉；第三轮把代码复制到 notebook 中运行，记录输出和异常。完成三轮后，再回到“检查问题”部分逐条回答。
-
-### 第一轮：建立对象地图
-
-| 问题 | 记录方式 |
-|---|---|
-| 本章研究的对象是什么 | 写出 3 个关键词 |
-| 对象在 Transformer 中对应哪个模块 | 标出 attention、FFN、LN、位置编码或训练环节 |
-| 本章最核心的公式是什么 | 抄写公式并标注变量形状 |
-| 最小代码验证什么 | 写出输入、输出和期望现象 |
-
-### 第二轮：补齐推导链
-
-阅读公式时，按下面顺序补齐中间步骤：
-
-1. 写出所有变量的形状。
-2. 标出每一步是线性、非线性、归一化、近似还是采样。
-3. 写出这一步是否改变均值、方差、范数、秩或熵。
-4. 说明这一步是否影响梯度传播。
-5. 判断它是否引入额外计算、显存或延迟。
-
-这五步会把 优化与数值稳定 从抽象概念变成可检查的模型行为。
-
-### 第三轮：运行最小代码
-
-代码练习不要求一开始就工程化。最小版本只需要满足：
-
-- 输入是随机张量或一个小 toy 数据。
-- 输出能验证本章某个公式或直觉。
-- 打印 shape、均值、方差、范数或误差。
-- 改一个变量后能观察变化。
-
-如果代码不能解释一个数学问题，它只是示例；如果代码能支持或反驳一个假设，它才是实验。
-
-## 分层掌握标准
-
-| 层级 | 能力表现 | 自测问题 |
+| 类型 | 典型现象 | 优先检查 |
 |---|---|---|
-| 入门 | 能复述定义和用途 | 这个概念解决什么问题？ |
-| 可用 | 能写出公式和 shape | 变量维度是否全部明确？ |
-| 可实现 | 能写最小代码 | 输出是否符合公式预期？ |
-| 可诊断 | 能解释异常现象 | 数值、梯度或 shape 哪里可能错？ |
-| 可研究 | 能设计 controlled ablation | 哪个变量被改变，哪个变量被固定？ |
+| 优化问题 | loss 不降、震荡、发散 | lr、warmup、optimizer、grad norm |
+| 数值问题 | NaN、Inf、overflow | logits、softmax、dtype、mask |
+| 泛化问题 | train 降，eval 不降 | 数据、正则、过拟合、评估协议 |
 
-学习 优化与数值稳定 时，至少达到“可实现”层级再进入下一章。若目标是论文研究，需要达到“可诊断”或“可研究”。
+这三类问题处理方法不同。优化问题不一定靠换模型解决；数值问题也不该靠盲目调参掩盖。
 
-## 典型调试清单
+## 手推任务：gradient clipping 比例
 
-当你在本章相关代码中遇到问题，优先检查下面几项：
+若原始梯度范数为 \(\|g\|=10\)，阈值 \(c=2\)，裁剪后：
 
-1. **shape 是否符合公式**：尤其是 batch、head、sequence、feature 轴。
-2. **数值尺度是否异常**：均值、方差、最大值、最小值是否合理。
-3. **softmax 或归一化是否在正确维度**。
-4. **mask 是否广播到正确位置**。
-5. **梯度是否存在 NaN、Inf 或突然变为 0**。
-6. **实验是否固定随机种子和关键超参**。
-7. **比较方法是否参数量、训练步数和数据一致**。
+\[
+g'=g\cdot\frac{2}{10}=0.2g.
+\]
 
-## 笔记模板
+方向不变，尺度变小。若 \(\|g\|<c\)，则不改变梯度。
 
-复制下面模板到你的 Obsidian 或 notebook：
+## Notebook 实验：检测 NaN 和 Inf
 
-```markdown
-# 优化与数值稳定 学习笔记
+```python
+import torch
 
-## 一句话直觉
-
-## 核心对象与形状
-
-| 对象 | 形状 | 含义 |
-|---|---|---|
-
-## 关键公式
-
-## 推导步骤
-
-## 最小代码输出
-
-## 常见错误
-
-## 与 Transformer 的关系
-
-## 本章实验结论
+x = torch.tensor([1.0, float('inf'), float('nan')])
+print(torch.isfinite(x))
+print('has bad value:', (~torch.isfinite(x)).any().item())
 ```
 
-## 进阶练习
+训练中建议对 loss、grad norm、logits max 做类似检查，尽早定位异常 step。
 
-- 把本章公式改写成带 batch 和 head 维度的版本。
-- 找一个相关论文公式，标注它依赖本章哪些概念。
-- 用随机输入构造一个失败案例，并解释失败原因。
-- 把最小代码改成函数，并写 2 个断言检查 shape 和数值范围。
-- 设计一个只改变一个变量的小实验，并记录结果。
+## 学习率日志模板
 
-## 与其它章节的连接
+| step | lr | train loss | grad norm | param norm | max logit | note |
+|---:|---:|---:|---:|---:|---:|---|
+| 100 | 1e-5 | 8.2 | 0.9 | 120 | 15 | warmup |
+| 1000 | 3e-4 | 4.1 | 2.4 | 126 | 28 | stable |
+| 1500 | 3e-4 | NaN | Inf | 130 | Inf | check mask/softmax |
 
-优化与数值稳定 不是孤立章节。你应该主动回看这些关系：
+如果没有日志，只凭最终指标很难定位训练问题。
 
-| 连接方向 | 需要回看的内容 |
+## 论文阅读提示
+
+优化相关论文常见关键词：
+
+| 关键词 | 应关注 |
 |---|---|
-| 数学对象 | 线性代数、概率统计、矩阵微分 |
-| 实现对象 | 张量运算、Attention 形状流 |
-| 训练对象 | 优化与数值稳定、残差与归一化 |
-| 研究对象 | 高效 Attention、长上下文、结构改进实验 |
+| warmup steps | 前期 lr 增长策略 |
+| cosine decay | 后期 lr 衰减方式 |
+| AdamW betas | 一阶/二阶矩平滑强度 |
+| gradient clipping | 是否限制异常更新 |
+| bf16/fp16 | 是否涉及 loss scaling |
+| Pre-LN/Post-LN | 梯度路径差异 |
+| stability | 是否给出 grad norm 或 loss 曲线证据 |
 
-如果某个连接读不懂，不要继续堆新概念，回到对应基础页补齐。
+## 章节小测
 
-## 复盘问题
-
-完成本章后，用不超过 300 字回答：
-
-1. 优化与数值稳定 最重要的一个数学对象是什么？
-2. 它在 Transformer 中对应哪个模块或现象？
-3. 哪个公式最值得手推？
-4. 哪段代码最能验证这个公式？
-5. 如果实验失败，你会先排查 shape、数值、梯度还是数据？为什么？
+1. AdamW 和 Adam 加 L2 正则有什么概念差别？
+2. gradient clipping 为什么不等于简单减小学习率？
+3. `log(softmax(x))` 为什么不如 `log_softmax(x)` 稳定？
+4. mixed precision 下 NaN 的常见来源有哪些？
+5. 训练曲线震荡时，你会先看哪些日志？
 
 ## 本章完成标准
 
-- 能把核心公式写在白纸上，不依赖网页。
-- 能解释每个变量的形状和语义。
-- 能运行最小代码并解释输出。
-- 能指出一个常见误区和一个调试方法。
-- 能把本章内容连接到至少一个 Transformer 研究问题。
+- 能实现 stable softmax 和解释 log-sum-exp。
+- 能说清 Adam、warmup、weight decay、gradient clipping 的作用。
+- 能设计一张训练稳定性日志表。
+- 能把 NaN/Inf 排查分解到 logits、mask、dtype、梯度四类线索。
+
+## 补充实验：更新范数
+
+除了梯度范数，还可以记录参数更新范数：
+
+\[
+\frac{\|\Delta\theta\|}{\|\theta\|}.
+\]
+
+如果这个比例突然变大，说明某一步更新相对参数尺度过猛，可能导致发散。
+
+```python
+import torch
+
+theta = torch.randn(100)
+grad = torch.randn(100)
+lr = 1e-3
+update = -lr * grad
+ratio = update.norm() / theta.norm()
+print(ratio.item())
+```
+
+在大模型训练中，单看 loss 往往太晚；更新范数、grad norm、max logits 能更早暴露问题。
+
+## 最终复盘模板
+
+```markdown
+# 优化与数值稳定复盘
+
+## 本次训练使用的 optimizer/lr/warmup
+## loss 曲线是否稳定
+## grad norm 和 update norm 是否异常
+## 是否出现 NaN/Inf
+## softmax、mask、dtype 排查记录
+```
 
