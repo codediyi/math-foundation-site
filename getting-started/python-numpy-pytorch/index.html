@@ -12,13 +12,13 @@
         <meta name="author" content="Yang">
       
       
-        <link rel="canonical" href="https://codediyi.github.io/math-foundation-site/getting-started/derivation-notes/">
+        <link rel="canonical" href="https://codediyi.github.io/math-foundation-site/getting-started/python-numpy-pytorch/">
       
       
-        <link rel="prev" href="../python-numpy-pytorch/">
+        <link rel="prev" href="../math-language/">
       
       
-        <link rel="next" href="../experiment-log/">
+        <link rel="next" href="../derivation-notes/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>推导与笔记 - 数学基础到 Transformer 研究</title>
+        <title>Python 与张量直觉 - 数学基础到 Transformer 研究</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#pythonnumpy-pytorch" class="md-skip">
           跳转至
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              推导与笔记
+              Python 与张量直觉
             
           </span>
         </div>
@@ -539,34 +539,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../python-numpy-pytorch/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Python 与张量直觉
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -586,7 +558,7 @@
   <span class="md-ellipsis">
     
   
-    推导与笔记
+    Python 与张量直觉
   
 
     
@@ -604,7 +576,7 @@
   <span class="md-ellipsis">
     
   
-    推导与笔记
+    Python 与张量直觉
   
 
     
@@ -630,7 +602,7 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         学习目标
@@ -641,43 +613,21 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么要学代码直觉
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        这一章为什么重要
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        先修与学习边界
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        核心概念
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        关键公式与直觉
+        从列表到张量
       
     </span>
   </a>
@@ -688,7 +638,7 @@
   <a href="#transformer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Transformer 对应关系
+        Transformer 常见维度
       
     </span>
   </a>
@@ -696,10 +646,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
+  <a href="#reshape" class="md-nav__link">
     <span class="md-ellipsis">
       
-        逐步例题
+        reshape 不是随便改含义
       
     </span>
   </a>
@@ -707,10 +657,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
+  <a href="#shape" class="md-nav__link">
     <span class="md-ellipsis">
       
-        关键代码块
+        矩阵乘法的 shape 规则
       
     </span>
   </a>
@@ -718,7 +668,62 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
+  <a href="#einsum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        einsum 读法
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        广播规则
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#softmax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        softmax 维度
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自动求导最小例子
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        attention 最小实现
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         常见误区
@@ -729,7 +734,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         最小练习
@@ -740,159 +745,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_11" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        检查问题
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_12" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         阶段产出
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_13" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        学习路径衔接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_14" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        长章学习指南
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="长章学习指南">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_15" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第一轮：建立对象地图
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_16" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第二轮：补齐推导链
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_17" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第三轮：运行最小代码
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_18" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        分层掌握标准
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_19" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        典型调试清单
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_20" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        笔记模板
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_21" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        进阶练习
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_22" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        与其它章节的连接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_23" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        复盘问题
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_24" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        本章完成标准
       
     </span>
   </a>
@@ -903,6 +759,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../derivation-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    推导与笔记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1925,7 +1809,7 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         学习目标
@@ -1936,43 +1820,21 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么要学代码直觉
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        这一章为什么重要
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        先修与学习边界
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        核心概念
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        关键公式与直觉
+        从列表到张量
       
     </span>
   </a>
@@ -1983,7 +1845,7 @@
   <a href="#transformer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Transformer 对应关系
+        Transformer 常见维度
       
     </span>
   </a>
@@ -1991,10 +1853,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
+  <a href="#reshape" class="md-nav__link">
     <span class="md-ellipsis">
       
-        逐步例题
+        reshape 不是随便改含义
       
     </span>
   </a>
@@ -2002,10 +1864,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
+  <a href="#shape" class="md-nav__link">
     <span class="md-ellipsis">
       
-        关键代码块
+        矩阵乘法的 shape 规则
       
     </span>
   </a>
@@ -2013,7 +1875,62 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
+  <a href="#einsum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        einsum 读法
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        广播规则
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#softmax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        softmax 维度
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自动求导最小例子
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        attention 最小实现
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         常见误区
@@ -2024,7 +1941,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         最小练习
@@ -2035,159 +1952,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_11" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        检查问题
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_12" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         阶段产出
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_13" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        学习路径衔接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_14" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        长章学习指南
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="长章学习指南">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_15" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第一轮：建立对象地图
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_16" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第二轮：补齐推导链
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_17" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第三轮：运行最小代码
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_18" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        分层掌握标准
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_19" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        典型调试清单
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_20" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        笔记模板
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_21" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        进阶练习
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_22" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        与其它章节的连接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_23" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        复盘问题
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_24" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        本章完成标准
       
     </span>
   </a>
@@ -2214,299 +1982,199 @@
   
 
 
-<h1 id="_1">推导与笔记方法<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h1 id="pythonnumpy-pytorch">Python、NumPy 与 PyTorch 张量直觉<a class="headerlink" href="#pythonnumpy-pytorch" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>把论文公式拆成对象、形状、假设、变换和结论。</p>
+<p>公式最终要落到数组。先把 shape、广播、矩阵乘法和自动求导弄清楚，后面学 attention 会轻很多。</p>
 </blockquote>
-<h2 id="_2">学习目标<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_1">学习目标<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <ul>
-<li>掌握公式卡片模板。</li>
-<li>能把矩阵公式转成 shape flow。</li>
-<li>能定位推导卡点来自定义、形状、假设还是代数。</li>
+<li>能用 Python 创建标量、向量、矩阵和三维/四维张量。</li>
+<li>能解释 <code>shape</code>、<code>reshape</code>、<code>transpose</code>、<code>matmul</code>、<code>einsum</code>。</li>
+<li>能理解广播规则为什么既方便又危险。</li>
+<li>能用 PyTorch autograd 验证一个最小梯度公式。</li>
 </ul>
-<h2 id="_3">这一章为什么重要<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p>论文推导常常省略中间步骤。读者如果不主动补形状和假设，就会误以为自己懂了。推导笔记的价值不是重写教材证明，而是让公式服务于结构判断和实验设计。</p>
-<p>很多学习者会把这一章当成“背景知识”，但在 Transformer 里它通常直接对应某个可观察对象：张量形状、logits 尺度、attention 权重、梯度范数、训练曲线、显存访问或长上下文检索能力。学习时不要只问“这个定义是什么”，还要问“它在模型里被哪个张量承载、在哪一步影响实验结果”。</p>
-<h2 id="_4">先修与学习边界<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>维度</th>
-<th>要求</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>先修</td>
-<td>会读基本代数符号，会写 Python/NumPy 或 PyTorch 最小代码</td>
-</tr>
-<tr>
-<td>本章重点</td>
-<td>建立可用于 Transformer 分析的最小数学闭环</td>
-</tr>
-<tr>
-<td>暂不追求</td>
-<td>完整数学专业证明体系、过度抽象的百科式展开</td>
-</tr>
-<tr>
-<td>验收方式</td>
-<td>能解释对象、推导关键式子、写最小代码、做一个可复现实验</td>
-</tr>
-</tbody>
-</table>
-<h2 id="_5">核心概念<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<ul>
-<li>对象：变量属于哪个空间。</li>
-<li>形状：每个轴的语义。</li>
-<li>假设：独立性、归一化、低秩、平滑性。</li>
-<li>变换：线性映射、softmax、mask、残差。</li>
-<li>结论：公式说明了什么可验证现象。</li>
-</ul>
-<h2 id="_6">关键公式与直觉<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<p>通用矩阵乘法反传：</p>
+<h2 id="_2">为什么要学代码直觉<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>数学公式经常省略 batch 维和 head 维，但代码不会省略。比如论文写：</p>
 <div class="arithmatex">\[
-Y=XW,\quad G_X=G_YW^\top,\quad G_W=X^\top G_Y.
+\operatorname{Attention}(Q,K,V)=\operatorname{softmax}(QK^\top/\sqrt{d})V
 \]</div>
-<p>每次看到更复杂的公式，都先尝试拆回这类基本单元。</p>
-<p>读公式时建议固定三件事：第一，看清每个变量的形状；第二，说明每一步是线性映射、归一化、概率变换还是近似；第三，问这个公式会影响哪个实验指标。只要能做到这三点，绝大多数论文公式就不会停留在“看起来懂了”的状态。</p>
-<h2 id="transformer">Transformer 对应关系<a class="headerlink" href="#transformer" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>项目</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>公式卡片</td>
-<td>论文阅读时的最小理解单元</td>
-</tr>
-<tr>
-<td>shape flow</td>
-<td>实现和 debug 的依据</td>
-</tr>
-<tr>
-<td>假设列表</td>
-<td>判断方法适用边界</td>
-</tr>
-<tr>
-<td>误区记录</td>
-<td>复盘失败实验</td>
-</tr>
-</tbody>
-</table>
-<h2 id="_7">逐步例题<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<p>推导 attention logits：设 <span class="arithmatex">\(Q,K\in \mathbb{R}^{B\times H\times N\times D}\)</span>，则 <span class="arithmatex">\(S=QK^\top\)</span> 的最后两维是 <span class="arithmatex">\(N\times N\)</span>。这一步已经说明显存与序列长度二次相关。</p>
-<p>完成例题时不要跳步。先写形状，再写等式，再写代码。若某一步无法说明形状，通常说明概念还没有真正对齐到模型实现。</p>
-<h2 id="_8">关键代码块<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>实现时你必须知道：</p>
+<ul>
+<li><span class="arithmatex">\(Q,K,V\)</span> 到底是二维、三维还是四维。</li>
+<li>哪两维做矩阵乘法。</li>
+<li>softmax 应该沿哪个维度。</li>
+<li>mask 如何广播。</li>
+<li>输出 shape 是否还能接后面的线性层。</li>
+</ul>
+<p>所以这页不追求完整 Python 教程，只建立读 Transformer 代码必需的最小张量直觉。</p>
+<h2 id="_3">从列表到张量<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">B</span><span class="p">,</span><span class="n">H</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">D</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">H</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">D</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">k</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">H</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">D</span><span class="p">)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">s</span> <span class="o">=</span> <span class="n">q</span> <span class="o">@</span> <span class="n">k</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">scalar</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">vector</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">]])</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">scalar</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># torch.Size([])</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">vector</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># torch.Size([3])</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># torch.Size([2, 2])</span>
 </code></pre></div>
-<p>代码块只追求最小可运行，不追求工程封装。建议复制到 notebook 后逐行打印 shape、均值、方差或误差，确认数学对象和实际张量一致。</p>
-<h2 id="_9">常见误区<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
-<ul>
-<li>推导时省略 batch/head 轴。</li>
-<li>把符号上的转置和代码里的 transpose 混淆。</li>
-<li>不写上游梯度，直接猜梯度公式。</li>
-<li>没有记录公式使用条件。</li>
-</ul>
-<h2 id="_10">最小练习<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
-<ul>
-<li>为 <span class="arithmatex">\(O=PV\)</span> 写反传公式卡。</li>
-<li>为 LayerNorm 写对象和形状表。</li>
-<li>找一篇论文中的核心公式，补齐所有变量定义。</li>
-</ul>
-<h2 id="_11">检查问题<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
-<ol>
-<li>这个概念在 Transformer 中对应哪个真实张量或实验现象？</li>
-<li>关键公式里的每个变量形状是什么？</li>
-<li>公式里是否隐藏了独立性、归一化、低秩、平滑性或近似假设？</li>
-<li>如果实现错了，最可能表现为 shape error、数值爆炸、梯度异常还是指标下降？</li>
-<li>有没有一个 20 行以内的代码片段可以验证本章直觉？</li>
-</ol>
-<h2 id="_12">阶段产出<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
-<p>建立个人“公式卡片库”，每张卡片只解决一个公式或一个梯度路径。</p>
-<h2 id="_13">学习路径衔接<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
-<p>完成后读“矩阵微分”和“Attention 反向传播”。</p>
-<h2 id="_14">长章学习指南<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
-<p>这一页不要按普通博客的方式快速扫过。建议按三轮阅读完成：第一轮只看标题、表格和公式，建立全局地图；第二轮逐段补齐变量形状和直觉；第三轮把代码复制到 notebook 中运行，记录输出和异常。完成三轮后，再回到“检查问题”部分逐条回答。</p>
-<h3 id="_15">第一轮：建立对象地图<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<p>读 shape 时，从左到右说清每一轴含义。不要只说“这是三维张量”，要说“第 0 维是 batch，第 1 维是 token，第 2 维是 hidden feature”。</p>
+<h2 id="transformer">Transformer 常见维度<a class="headerlink" href="#transformer" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>问题</th>
-<th>记录方式</th>
+<th>符号</th>
+<th>代码名</th>
+<th>含义</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>本章研究的对象是什么</td>
-<td>写出 3 个关键词</td>
+<td><span class="arithmatex">\(B\)</span></td>
+<td><code>batch</code></td>
+<td>一次并行处理多少样本</td>
 </tr>
 <tr>
-<td>对象在 Transformer 中对应哪个模块</td>
-<td>标出 attention、FFN、LN、位置编码或训练环节</td>
+<td><span class="arithmatex">\(T\)</span></td>
+<td><code>seq_len</code></td>
+<td>序列长度，token 数</td>
 </tr>
 <tr>
-<td>本章最核心的公式是什么</td>
-<td>抄写公式并标注变量形状</td>
+<td><span class="arithmatex">\(D\)</span></td>
+<td><code>d_model</code></td>
+<td>模型隐藏维度</td>
 </tr>
 <tr>
-<td>最小代码验证什么</td>
-<td>写出输入、输出和期望现象</td>
+<td><span class="arithmatex">\(H\)</span></td>
+<td><code>num_heads</code></td>
+<td>head 数</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(d_h\)</span></td>
+<td><code>head_dim</code></td>
+<td>每个 head 的维度，通常 <span class="arithmatex">\(D/H\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(V\)</span></td>
+<td><code>vocab_size</code></td>
+<td>词表大小</td>
 </tr>
 </tbody>
 </table>
-<h3 id="_16">第二轮：补齐推导链<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
-<p>阅读公式时，按下面顺序补齐中间步骤：</p>
-<ol>
-<li>写出所有变量的形状。</li>
-<li>标出每一步是线性、非线性、归一化、近似还是采样。</li>
-<li>写出这一步是否改变均值、方差、范数、秩或熵。</li>
-<li>说明这一步是否影响梯度传播。</li>
-<li>判断它是否引入额外计算、显存或延迟。</li>
-</ol>
-<p>这五步会把 推导与笔记方法 从抽象概念变成可检查的模型行为。</p>
-<h3 id="_17">第三轮：运行最小代码<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
-<p>代码练习不要求一开始就工程化。最小版本只需要满足：</p>
-<ul>
-<li>输入是随机张量或一个小 toy 数据。</li>
-<li>输出能验证本章某个公式或直觉。</li>
-<li>打印 shape、均值、方差、范数或误差。</li>
-<li>改一个变量后能观察变化。</li>
-</ul>
-<p>如果代码不能解释一个数学问题，它只是示例；如果代码能支持或反驳一个假设，它才是实验。</p>
-<h2 id="_18">分层掌握标准<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>层级</th>
-<th>能力表现</th>
-<th>自测问题</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>入门</td>
-<td>能复述定义和用途</td>
-<td>这个概念解决什么问题？</td>
-</tr>
-<tr>
-<td>可用</td>
-<td>能写出公式和 shape</td>
-<td>变量维度是否全部明确？</td>
-</tr>
-<tr>
-<td>可实现</td>
-<td>能写最小代码</td>
-<td>输出是否符合公式预期？</td>
-</tr>
-<tr>
-<td>可诊断</td>
-<td>能解释异常现象</td>
-<td>数值、梯度或 shape 哪里可能错？</td>
-</tr>
-<tr>
-<td>可研究</td>
-<td>能设计 controlled ablation</td>
-<td>哪个变量被改变，哪个变量被固定？</td>
-</tr>
-</tbody>
-</table>
-<p>学习 推导与笔记方法 时，至少达到“可实现”层级再进入下一章。若目标是论文研究，需要达到“可诊断”或“可研究”。</p>
-<h2 id="_19">典型调试清单<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h2>
-<p>当你在本章相关代码中遇到问题，优先检查下面几项：</p>
-<ol>
-<li><strong>shape 是否符合公式</strong>：尤其是 batch、head、sequence、feature 轴。</li>
-<li><strong>数值尺度是否异常</strong>：均值、方差、最大值、最小值是否合理。</li>
-<li><strong>softmax 或归一化是否在正确维度</strong>。</li>
-<li><strong>mask 是否广播到正确位置</strong>。</li>
-<li><strong>梯度是否存在 NaN、Inf 或突然变为 0</strong>。</li>
-<li><strong>实验是否固定随机种子和关键超参</strong>。</li>
-<li><strong>比较方法是否参数量、训练步数和数据一致</strong>。</li>
-</ol>
-<h2 id="_20">笔记模板<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h2>
-<p>复制下面模板到你的 Obsidian 或 notebook：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gh"># 推导与笔记方法 学习笔记</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="gu">## 一句话直觉</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="gu">## 核心对象与形状</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>| 对象 | 形状 | 含义 |
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>|---|---|---|
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="gu">## 关键公式</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="gu">## 推导步骤</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="gu">## 最小代码输出</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="gu">## 常见错误</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="gu">## 与 Transformer 的关系</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="gu">## 本章实验结论</span>
+<p>典型输入：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">B</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">16</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="_21">进阶练习<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h2>
+<h2 id="reshape">reshape 不是随便改含义<a class="headerlink" href="#reshape" title="Permanent link">&para;</a></h2>
+<p><code>reshape</code> 只改变数据排列的视图，不会自动理解语义。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">B</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">4</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">head_dim</span> <span class="o">=</span> <span class="n">D</span> <span class="o">//</span> <span class="n">H</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">X_heads</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">X_heads</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (B, H, T, head_dim)</span>
+</code></pre></div>
+<p>这里先把最后一维拆成 <code>H * head_dim</code>，再把 head 维移动到 token 维前面。多头注意力里这一步非常常见。</p>
+<h2 id="shape">矩阵乘法的 shape 规则<a class="headerlink" href="#shape" title="Permanent link">&para;</a></h2>
+<p>二维矩阵乘法：</p>
+<div class="arithmatex">\[
+(m,n) @ (n,p) = (m,p)
+\]</div>
+<p>代码：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">A</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">B</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">C</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">B</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (3, 5)</span>
+</code></pre></div>
+<p>最后一维和倒数第二维要对齐。Transformer 中：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">Q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">K</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">logits</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">K</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (B, H, T, T)</span>
+</code></pre></div>
+<p>前面的 <code>B,H</code> 被当作批量维，矩阵乘法发生在最后两维。</p>
+<h2 id="einsum">einsum 读法<a class="headerlink" href="#einsum" title="Permanent link">&para;</a></h2>
+<p><code>einsum</code> 能把公式写得更接近数学：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;bhtd,bhsd-&gt;bhts&quot;</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+</code></pre></div>
+<p>读法：</p>
 <ul>
-<li>把本章公式改写成带 batch 和 head 维度的版本。</li>
-<li>找一个相关论文公式，标注它依赖本章哪些概念。</li>
-<li>用随机输入构造一个失败案例，并解释失败原因。</li>
-<li>把最小代码改成函数，并写 2 个断言检查 shape 和数值范围。</li>
-<li>设计一个只改变一个变量的小实验，并记录结果。</li>
+<li><code>b</code> 是 batch。</li>
+<li><code>h</code> 是 head。</li>
+<li><code>t</code> 是 query 位置。</li>
+<li><code>s</code> 是 key 位置。</li>
+<li><code>d</code> 是特征维。</li>
+<li>输入都含有 <code>d</code>，输出没有 <code>d</code>，说明对 <code>d</code> 求和。</li>
 </ul>
-<h2 id="_22">与其它章节的连接<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h2>
-<p>推导与笔记方法 不是孤立章节。你应该主动回看这些关系：</p>
-<table>
-<thead>
-<tr>
-<th>连接方向</th>
-<th>需要回看的内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>数学对象</td>
-<td>线性代数、概率统计、矩阵微分</td>
-</tr>
-<tr>
-<td>实现对象</td>
-<td>张量运算、Attention 形状流</td>
-</tr>
-<tr>
-<td>训练对象</td>
-<td>优化与数值稳定、残差与归一化</td>
-</tr>
-<tr>
-<td>研究对象</td>
-<td>高效 Attention、长上下文、结构改进实验</td>
-</tr>
-</tbody>
-</table>
-<p>如果某个连接读不懂，不要继续堆新概念，回到对应基础页补齐。</p>
-<h2 id="_23">复盘问题<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h2>
-<p>完成本章后，用不超过 300 字回答：</p>
+<p>这正是：</p>
+<div class="arithmatex">\[
+S_{bhts}=\sum_d Q_{bhtd}K_{bhsd}
+\]</div>
+<h2 id="_4">广播规则<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>广播让不同 shape 的张量可以参与运算，但也容易悄悄出错。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">bias</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">Y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">+</span> <span class="n">bias</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (2, 5, 16)</span>
+</code></pre></div>
+<p><code>bias</code> 被自动扩展到 batch 和 token 维。这个行为适合加 bias，但如果 mask shape 写错，也可能在错误位置广播。</p>
+<p>attention mask 常见形状：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">causal</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span><span class="o">.</span><span class="n">bool</span><span class="p">()</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">logits</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">masked_fill</span><span class="p">(</span><span class="o">~</span><span class="n">causal</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;-inf&quot;</span><span class="p">))</span>
+</code></pre></div>
+<p>这里 <code>(T,T)</code> 会广播到 <code>(B,H,T,T)</code>。</p>
+<h2 id="softmax">softmax 维度<a class="headerlink" href="#softmax" title="Permanent link">&para;</a></h2>
+<p>attention logits 的 shape 通常是 <code>(B,H,Tq,Tk)</code>。softmax 应该沿 key 位置做：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+<p>如果把 <code>dim</code> 写错，代码可能不报错，但模型含义完全变了。</p>
+<h2 id="_5">自动求导最小例子<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># 2*x</span>
+</code></pre></div>
+<p>autograd 会帮你算梯度，但学习矩阵微分时不能只依赖它。正确用法是：先手推一个小公式，再用 autograd 验证。</p>
+<h2 id="attention">attention 最小实现<a class="headerlink" href="#attention" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="n">Q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">K</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="n">V</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="n">logits</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">K</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">D</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="n">weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="n">out</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">@</span> <span class="n">V</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="nb">print</span><span class="p">(</span><span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>   <span class="c1"># (2, 4, 5, 5)</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (2, 4, 5, 5)</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>      <span class="c1"># (2, 4, 5, 8)</span>
+</code></pre></div>
+<p>这是本站后续很多章节的公共代码底座。</p>
+<h2 id="_6">常见误区<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<ul>
+<li>只打印 tensor，不打印 shape。</li>
+<li>认为 <code>reshape</code> 后语义一定正确。</li>
+<li>误把 <code>(B,T,D)</code> 和 <code>(T,B,D)</code> 混用。</li>
+<li><code>softmax(dim=1)</code>、<code>softmax(dim=-1)</code> 随手写，没有解释维度含义。</li>
+<li>mask 广播到了错误轴。</li>
+<li>用 <code>.view()</code> 处理非连续张量导致报错或含义不清。</li>
+</ul>
+<h2 id="_7">最小练习<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
 <ol>
-<li>推导与笔记方法 最重要的一个数学对象是什么？</li>
-<li>它在 Transformer 中对应哪个模块或现象？</li>
-<li>哪个公式最值得手推？</li>
-<li>哪段代码最能验证这个公式？</li>
-<li>如果实验失败，你会先排查 shape、数值、梯度还是数据？为什么？</li>
+<li>创建一个 <code>(B,T,D)</code> 张量，并把它拆成 <code>(B,H,T,d_h)</code>。</li>
+<li>用 <code>matmul</code> 和 <code>einsum</code> 分别计算 attention logits，验证结果接近。</li>
+<li>故意把 softmax 维度改错，观察每一维求和结果。</li>
+<li>写一个 causal mask，并检查未来位置是否为 <code>-inf</code>。</li>
+<li>手推 <span class="arithmatex">\(y=\sum_i x_i^2\)</span> 的梯度，再用 autograd 验证。</li>
 </ol>
-<h2 id="_24">本章完成标准<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h2>
-<ul>
-<li>能把核心公式写在白纸上，不依赖网页。</li>
-<li>能解释每个变量的形状和语义。</li>
-<li>能运行最小代码并解释输出。</li>
-<li>能指出一个常见误区和一个调试方法。</li>
-<li>能把本章内容连接到至少一个 Transformer 研究问题。</li>
-</ul>
+<h2 id="_8">阶段产出<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>写一页“Transformer shape 字典”，记录从 embedding 输入到 attention 输出每个张量的 shape。后续读论文时先查这张字典。</p>
 
 
 

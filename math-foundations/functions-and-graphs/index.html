@@ -12,13 +12,13 @@
         <meta name="author" content="Yang">
       
       
-        <link rel="canonical" href="https://codediyi.github.io/math-foundation-site/math-foundations/optimization/">
+        <link rel="canonical" href="https://codediyi.github.io/math-foundation-site/math-foundations/functions-and-graphs/">
       
       
-        <link rel="prev" href="../information-theory/">
+        <link rel="prev" href="../../getting-started/experiment-log/">
       
       
-        <link rel="next" href="../matrix-calculus/">
+        <link rel="next" href="../calculus/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>优化与数值稳定 - 数学基础到 Transformer 研究</title>
+        <title>函数、图像与变化率 - 数学基础到 Transformer 研究</title>
       
     
     
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              优化与数值稳定
+              函数、图像与变化率
             
           </span>
         </div>
@@ -259,7 +259,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../functions-and-graphs/" class="md-tabs__link">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -702,10 +702,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../functions-and-graphs/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    函数、图像与变化率
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -721,6 +748,180 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        学习目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么要学
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        函数是什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        图像怎么读
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        斜率和导数
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见导数
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        链式法则
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多变量函数和偏导
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#softmax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指数、对数和 softmax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        画函数观察直觉
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        与 Transformer 的关系
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见误区
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最小练习
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        阶段产出
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -870,37 +1071,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    优化与数值稳定
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../optimization/" class="md-nav__link">
         
   
   
@@ -916,296 +1090,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="目录">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        学习目标
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        这一章为什么重要
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        先修与学习边界
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        核心概念
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        关键公式与直觉
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#transformer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Transformer 对应关系
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        逐步例题
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        关键代码块
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        常见误区
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        最小练习
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_11" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        检查问题
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_12" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        阶段产出
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_13" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        学习路径衔接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_14" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        长章学习指南
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="长章学习指南">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_15" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第一轮：建立对象地图
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_16" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第二轮：补齐推导链
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_17" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第三轮：运行最小代码
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_18" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        分层掌握标准
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_19" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        典型调试清单
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_20" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        笔记模板
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_21" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        进阶练习
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_22" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        与其它章节的连接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_23" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        复盘问题
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_24" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        本章完成标准
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1939,7 +1823,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        这一章为什么重要
+        为什么要学
       
     </span>
   </a>
@@ -1950,7 +1834,7 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        先修与学习边界
+        函数是什么
       
     </span>
   </a>
@@ -1961,7 +1845,7 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        核心概念
+        图像怎么读
       
     </span>
   </a>
@@ -1972,18 +1856,7 @@
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        关键公式与直觉
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#transformer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Transformer 对应关系
+        斜率和导数
       
     </span>
   </a>
@@ -1994,7 +1867,7 @@
   <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
-        逐步例题
+        常见导数
       
     </span>
   </a>
@@ -2005,7 +1878,7 @@
   <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        关键代码块
+        链式法则
       
     </span>
   </a>
@@ -2016,7 +1889,18 @@
   <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
-        常见误区
+        多变量函数和偏导
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#softmax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        指数、对数和 softmax
       
     </span>
   </a>
@@ -2027,7 +1911,18 @@
   <a href="#_10" class="md-nav__link">
     <span class="md-ellipsis">
       
-        最小练习
+        画函数观察直觉
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        与 Transformer 的关系
       
     </span>
   </a>
@@ -2038,7 +1933,7 @@
   <a href="#_11" class="md-nav__link">
     <span class="md-ellipsis">
       
-        检查问题
+        常见误区
       
     </span>
   </a>
@@ -2049,7 +1944,7 @@
   <a href="#_12" class="md-nav__link">
     <span class="md-ellipsis">
       
-        阶段产出
+        最小练习
       
     </span>
   </a>
@@ -2060,134 +1955,7 @@
   <a href="#_13" class="md-nav__link">
     <span class="md-ellipsis">
       
-        学习路径衔接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_14" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        长章学习指南
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="长章学习指南">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_15" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第一轮：建立对象地图
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_16" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第二轮：补齐推导链
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_17" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        第三轮：运行最小代码
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_18" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        分层掌握标准
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_19" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        典型调试清单
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_20" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        笔记模板
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_21" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        进阶练习
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_22" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        与其它章节的连接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_23" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        复盘问题
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_24" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        本章完成标准
+        阶段产出
       
     </span>
   </a>
@@ -2214,299 +1982,210 @@
   
 
 
-<h1 id="_1">优化与数值稳定<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h1 id="_1">函数、图像与变化率<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>用 smoothness、条件数和稳定实现理解训练曲线。</p>
+<p>微积分前先理解函数。函数不是公式列表，而是“输入如何变成输出”的规则；导数是输出对输入变化的敏感度。</p>
 </blockquote>
 <h2 id="_2">学习目标<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <ul>
-<li>理解 GD、SGD、Adam、momentum 和 weight decay。</li>
-<li>掌握 log-sum-exp 和稳定 softmax。</li>
-<li>能解释训练发散和梯度异常。</li>
+<li>理解函数、图像、单调性、斜率和局部变化率。</li>
+<li>掌握线性函数、二次函数、指数、对数、sigmoid、softmax 的基础直觉。</li>
+<li>能解释导数、偏导和链式法则为什么是反向传播的核心。</li>
+<li>能用代码画出函数并观察梯度变化。</li>
 </ul>
-<h2 id="_3">这一章为什么重要<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p>很多训练问题不是模型表达力不足，而是尺度和数值问题。Transformer 的 warmup、Pre-LN、DeepNorm、gradient clipping 和 mixed precision 都在控制更新尺度。</p>
-<p>很多学习者会把这一章当成“背景知识”，但在 Transformer 里它通常直接对应某个可观察对象：张量形状、logits 尺度、attention 权重、梯度范数、训练曲线、显存访问或长上下文检索能力。学习时不要只问“这个定义是什么”，还要问“它在模型里被哪个张量承载、在哪一步影响实验结果”。</p>
-<h2 id="_4">先修与学习边界<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>维度</th>
-<th>要求</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>先修</td>
-<td>会读基本代数符号，会写 Python/NumPy 或 PyTorch 最小代码</td>
-</tr>
-<tr>
-<td>本章重点</td>
-<td>建立可用于 Transformer 分析的最小数学闭环</td>
-</tr>
-<tr>
-<td>暂不追求</td>
-<td>完整数学专业证明体系、过度抽象的百科式展开</td>
-</tr>
-<tr>
-<td>验收方式</td>
-<td>能解释对象、推导关键式子、写最小代码、做一个可复现实验</td>
-</tr>
-</tbody>
-</table>
-<h2 id="_5">核心概念<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<ul>
-<li>梯度下降和 SGD。</li>
-<li>Adam、动量、自适应预条件。</li>
-<li>L-smooth 和强凸直觉。</li>
-<li>条件数。</li>
-<li>log-sum-exp、overflow、underflow。</li>
-</ul>
-<h2 id="_6">关键公式与直觉<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<p>稳定 log-sum-exp：</p>
+<h2 id="_3">为什么要学<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>深度学习模型本质上是一个大函数：</p>
 <div class="arithmatex">\[
-\log\sum_i e^{z_i}=m+\log\sum_i e^{z_i-m},\quad m=\max_i z_i.
+\hat{y}=f_\theta(x)
 \]</div>
-<p>这是稳定 softmax 和 cross entropy 的基础。</p>
-<p>读公式时建议固定三件事：第一，看清每个变量的形状；第二，说明每一步是线性映射、归一化、概率变换还是近似；第三，问这个公式会影响哪个实验指标。只要能做到这三点，绝大多数论文公式就不会停留在“看起来懂了”的状态。</p>
-<h2 id="transformer">Transformer 对应关系<a class="headerlink" href="#transformer" title="Permanent link">&para;</a></h2>
+<p>训练就是调参数 <span class="arithmatex">\(\theta\)</span>，让损失函数 <span class="arithmatex">\(L(\theta)\)</span> 变小。如果函数、斜率、导数没有理解清楚，后面学优化、矩阵微分、反向传播会很吃力。</p>
+<h2 id="_4">函数是什么<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>函数是一条规则：给定输入，产生输出。</p>
 <table>
 <thead>
 <tr>
-<th>项目</th>
-<th>内容</th>
+<th>函数</th>
+<th>公式</th>
+<th>普通语言</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>warmup</td>
-<td>训练早期更新尺度控制</td>
+<td>线性函数</td>
+<td><span class="arithmatex">\(f(x)=ax+b\)</span></td>
+<td>输入变大，输出按固定速度变化</td>
 </tr>
 <tr>
-<td>梯度裁剪</td>
-<td>异常 batch 防护</td>
+<td>二次函数</td>
+<td><span class="arithmatex">\(f(x)=x^2\)</span></td>
+<td>离 0 越远增长越快</td>
 </tr>
 <tr>
-<td>log-sum-exp</td>
-<td>稳定 softmax/CE</td>
+<td>指数函数</td>
+<td><span class="arithmatex">\(f(x)=e^x\)</span></td>
+<td>增长速度随自身变大</td>
 </tr>
 <tr>
-<td>条件数</td>
-<td>收敛速度和方向不均衡</td>
+<td>对数函数</td>
+<td><span class="arithmatex">\(f(x)=\log x\)</span></td>
+<td>大数压缩，小数区分更明显</td>
+</tr>
+<tr>
+<td>sigmoid</td>
+<td><span class="arithmatex">\(f(x)=1/(1+e^{-x})\)</span></td>
+<td>把实数压到 0 到 1</td>
 </tr>
 </tbody>
 </table>
-<h2 id="_7">逐步例题<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<p>输入 <code>[1000,1001,1002]</code> 时，直接 <code>exp</code> 会 overflow；减去最大值不改变 softmax 结果，但让数值可计算。</p>
-<p>完成例题时不要跳步。先写形状，再写等式，再写代码。若某一步无法说明形状，通常说明概念还没有真正对齐到模型实现。</p>
-<h2 id="_8">关键代码块<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<h2 id="_5">图像怎么读<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>读函数图像时看四件事：</p>
+<ol>
+<li>输入范围是什么。</li>
+<li>输出范围是什么。</li>
+<li>函数是上升、下降还是先降后升。</li>
+<li>哪些位置变化快，哪些位置变化慢。</li>
+</ol>
+<p>例如 sigmoid 在中间变化快，两端变化慢。这意味着输入很大或很小时，梯度接近 0，容易出现饱和。</p>
+<h2 id="_6">斜率和导数<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>直线的斜率：</p>
+<div class="arithmatex">\[
+k=\frac{\Delta y}{\Delta x}
+\]</div>
+<p>导数是“非常小范围内的斜率”：</p>
+<div class="arithmatex">\[
+f'(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}
+\]</div>
+<p>直觉：导数告诉你，如果输入 <span class="arithmatex">\(x\)</span> 增加一点点，输出 <span class="arithmatex">\(f(x)\)</span> 会增加还是减少，变化快还是慢。</p>
+<h2 id="_7">常见导数<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>导数</th>
+<th>直觉</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(x^2\)</span></td>
+<td><span class="arithmatex">\(2x\)</span></td>
+<td>离 0 越远变化越快</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(e^x\)</span></td>
+<td><span class="arithmatex">\(e^x\)</span></td>
+<td>指数的变化率等于自身</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\log x\)</span></td>
+<td><span class="arithmatex">\(1/x\)</span></td>
+<td>小数附近变化大，大数附近变化小</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(ax+b\)</span></td>
+<td><span class="arithmatex">\(a\)</span></td>
+<td>线性函数变化率固定</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_8">链式法则<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>如果：</p>
+<div class="arithmatex">\[
+y=f(g(x))
+\]</div>
+<p>那么：</p>
+<div class="arithmatex">\[
+\frac{dy}{dx}=\frac{dy}{dg}\frac{dg}{dx}
+\]</div>
+<p>普通语言：最终输出对输入的影响，等于每一层局部影响连乘。反向传播就是在大型计算图上反复使用链式法则。</p>
+<h2 id="_9">多变量函数和偏导<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>模型损失通常依赖很多参数：</p>
+<div class="arithmatex">\[
+L=L(w_1,w_2,\ldots,w_n)
+\]</div>
+<p>偏导 <span class="arithmatex">\(\frac{\partial L}{\partial w_i}\)</span> 表示只改变 <span class="arithmatex">\(w_i\)</span>，其它参数暂时固定时，损失如何变化。</p>
+<p>梯度把所有偏导收集成一个向量：</p>
+<div class="arithmatex">\[
+\nabla L=\left[\frac{\partial L}{\partial w_1},\ldots,\frac{\partial L}{\partial w_n}\right]
+\]</div>
+<p>梯度下降用负梯度方向更新参数：</p>
+<div class="arithmatex">\[
+w \leftarrow w-\eta\nabla L
+\]</div>
+<h2 id="softmax">指数、对数和 softmax<a class="headerlink" href="#softmax" title="Permanent link">&para;</a></h2>
+<p>softmax 用指数把分数变成正数：</p>
+<div class="arithmatex">\[
+p_i=\frac{e^{z_i}}{\sum_j e^{z_j}}
+\]</div>
+<p>如果某个 <span class="arithmatex">\(z_i\)</span> 比其它值大很多，<span class="arithmatex">\(e^{z_i}\)</span> 会占据绝大多数比例，softmax 接近 one-hot。这就是 logits 过大导致饱和的原因。</p>
+<p>稳定实现通常先减最大值：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">stable_softmax</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">e</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">return</span> <span class="n">e</span> <span class="o">/</span> <span class="n">e</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">stable_softmax</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1000.</span><span class="p">,</span><span class="mf">1001.</span><span class="p">,</span><span class="mf">1002.</span><span class="p">]])))</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1000.0</span><span class="p">,</span> <span class="mf">1001.0</span><span class="p">,</span> <span class="mf">1002.0</span><span class="p">])</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">p</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="n">z</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </code></pre></div>
-<p>代码块只追求最小可运行，不追求工程封装。建议复制到 notebook 后逐行打印 shape、均值、方差或误差，确认数学对象和实际张量一致。</p>
-<h2 id="_9">常见误区<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
-<ul>
-<li>认为 Adam 会自动解决所有不稳定。</li>
-<li>只看 FLOPs，不看 wall-clock 和内存访问。</li>
-<li>把 overflow 当成小实现细节。</li>
-<li>调参时不记录学习率、warmup 和梯度范数。</li>
-</ul>
-<h2 id="_10">最小练习<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
-<ul>
-<li>实现稳定 softmax 和不稳定 softmax 对比。</li>
-<li>在二次函数上比较不同学习率。</li>
-<li>记录一个小模型的 loss 与 grad norm。</li>
-</ul>
-<h2 id="_11">检查问题<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
-<ol>
-<li>这个概念在 Transformer 中对应哪个真实张量或实验现象？</li>
-<li>关键公式里的每个变量形状是什么？</li>
-<li>公式里是否隐藏了独立性、归一化、低秩、平滑性或近似假设？</li>
-<li>如果实现错了，最可能表现为 shape error、数值爆炸、梯度异常还是指标下降？</li>
-<li>有没有一个 20 行以内的代码片段可以验证本章直觉？</li>
-</ol>
-<h2 id="_12">阶段产出<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
-<p>一页笔记：优化稳定性如何连接学习率、归一化、残差和数值实现。</p>
-<h2 id="_13">学习路径衔接<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
-<p>之后读“残差与归一化”和“高效 Attention”。</p>
-<h2 id="_14">长章学习指南<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
-<p>这一页不要按普通博客的方式快速扫过。建议按三轮阅读完成：第一轮只看标题、表格和公式，建立全局地图；第二轮逐段补齐变量形状和直觉；第三轮把代码复制到 notebook 中运行，记录输出和异常。完成三轮后，再回到“检查问题”部分逐条回答。</p>
-<h3 id="_15">第一轮：建立对象地图<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>问题</th>
-<th>记录方式</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>本章研究的对象是什么</td>
-<td>写出 3 个关键词</td>
-</tr>
-<tr>
-<td>对象在 Transformer 中对应哪个模块</td>
-<td>标出 attention、FFN、LN、位置编码或训练环节</td>
-</tr>
-<tr>
-<td>本章最核心的公式是什么</td>
-<td>抄写公式并标注变量形状</td>
-</tr>
-<tr>
-<td>最小代码验证什么</td>
-<td>写出输入、输出和期望现象</td>
-</tr>
-</tbody>
-</table>
-<h3 id="_16">第二轮：补齐推导链<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
-<p>阅读公式时，按下面顺序补齐中间步骤：</p>
-<ol>
-<li>写出所有变量的形状。</li>
-<li>标出每一步是线性、非线性、归一化、近似还是采样。</li>
-<li>写出这一步是否改变均值、方差、范数、秩或熵。</li>
-<li>说明这一步是否影响梯度传播。</li>
-<li>判断它是否引入额外计算、显存或延迟。</li>
-</ol>
-<p>这五步会把 优化与数值稳定 从抽象概念变成可检查的模型行为。</p>
-<h3 id="_17">第三轮：运行最小代码<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
-<p>代码练习不要求一开始就工程化。最小版本只需要满足：</p>
-<ul>
-<li>输入是随机张量或一个小 toy 数据。</li>
-<li>输出能验证本章某个公式或直觉。</li>
-<li>打印 shape、均值、方差、范数或误差。</li>
-<li>改一个变量后能观察变化。</li>
-</ul>
-<p>如果代码不能解释一个数学问题，它只是示例；如果代码能支持或反驳一个假设，它才是实验。</p>
-<h2 id="_18">分层掌握标准<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>层级</th>
-<th>能力表现</th>
-<th>自测问题</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>入门</td>
-<td>能复述定义和用途</td>
-<td>这个概念解决什么问题？</td>
-</tr>
-<tr>
-<td>可用</td>
-<td>能写出公式和 shape</td>
-<td>变量维度是否全部明确？</td>
-</tr>
-<tr>
-<td>可实现</td>
-<td>能写最小代码</td>
-<td>输出是否符合公式预期？</td>
-</tr>
-<tr>
-<td>可诊断</td>
-<td>能解释异常现象</td>
-<td>数值、梯度或 shape 哪里可能错？</td>
-</tr>
-<tr>
-<td>可研究</td>
-<td>能设计 controlled ablation</td>
-<td>哪个变量被改变，哪个变量被固定？</td>
-</tr>
-</tbody>
-</table>
-<p>学习 优化与数值稳定 时，至少达到“可实现”层级再进入下一章。若目标是论文研究，需要达到“可诊断”或“可研究”。</p>
-<h2 id="_19">典型调试清单<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h2>
-<p>当你在本章相关代码中遇到问题，优先检查下面几项：</p>
-<ol>
-<li><strong>shape 是否符合公式</strong>：尤其是 batch、head、sequence、feature 轴。</li>
-<li><strong>数值尺度是否异常</strong>：均值、方差、最大值、最小值是否合理。</li>
-<li><strong>softmax 或归一化是否在正确维度</strong>。</li>
-<li><strong>mask 是否广播到正确位置</strong>。</li>
-<li><strong>梯度是否存在 NaN、Inf 或突然变为 0</strong>。</li>
-<li><strong>实验是否固定随机种子和关键超参</strong>。</li>
-<li><strong>比较方法是否参数量、训练步数和数据一致</strong>。</li>
-</ol>
-<h2 id="_20">笔记模板<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h2>
-<p>复制下面模板到你的 Obsidian 或 notebook：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gh"># 优化与数值稳定 学习笔记</span>
+<h2 id="_10">画函数观察直觉<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="gu">## 一句话直觉</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="gu">## 核心对象与形状</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>| 对象 | 形状 | 含义 |
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>|---|---|---|
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="gu">## 关键公式</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="gu">## 推导步骤</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="gu">## 最小代码输出</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="gu">## 常见错误</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="gu">## 与 Transformer 的关系</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="gu">## 本章实验结论</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">sigmoid</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 </code></pre></div>
-<h2 id="_21">进阶练习<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h2>
-<ul>
-<li>把本章公式改写成带 batch 和 head 维度的版本。</li>
-<li>找一个相关论文公式，标注它依赖本章哪些概念。</li>
-<li>用随机输入构造一个失败案例，并解释失败原因。</li>
-<li>把最小代码改成函数，并写 2 个断言检查 shape 和数值范围。</li>
-<li>设计一个只改变一个变量的小实验，并记录结果。</li>
-</ul>
-<h2 id="_22">与其它章节的连接<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h2>
-<p>优化与数值稳定 不是孤立章节。你应该主动回看这些关系：</p>
+<p>如果环境支持画图，可以把 <code>x</code> 和 <code>sigmoid</code> 画出来。重点不是图好看，而是观察：两端输出接近 0 或 1，中间变化最快。</p>
+<h2 id="transformer">与 Transformer 的关系<a class="headerlink" href="#transformer" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>连接方向</th>
-<th>需要回看的内容</th>
+<th>函数概念</th>
+<th>Transformer 中的位置</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>数学对象</td>
-<td>线性代数、概率统计、矩阵微分</td>
+<td>线性函数</td>
+<td>embedding 投影、Q/K/V/O、FFN</td>
 </tr>
 <tr>
-<td>实现对象</td>
-<td>张量运算、Attention 形状流</td>
+<td>指数函数</td>
+<td>softmax attention 权重</td>
 </tr>
 <tr>
-<td>训练对象</td>
-<td>优化与数值稳定、残差与归一化</td>
+<td>对数函数</td>
+<td>cross entropy、log likelihood</td>
 </tr>
 <tr>
-<td>研究对象</td>
-<td>高效 Attention、长上下文、结构改进实验</td>
+<td>导数</td>
+<td>反向传播和优化</td>
+</tr>
+<tr>
+<td>链式法则</td>
+<td>多层网络梯度传播</td>
+</tr>
+<tr>
+<td>饱和</td>
+<td>softmax 过尖、梯度变小</td>
 </tr>
 </tbody>
 </table>
-<p>如果某个连接读不懂，不要继续堆新概念，回到对应基础页补齐。</p>
-<h2 id="_23">复盘问题<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h2>
-<p>完成本章后，用不超过 300 字回答：</p>
-<ol>
-<li>优化与数值稳定 最重要的一个数学对象是什么？</li>
-<li>它在 Transformer 中对应哪个模块或现象？</li>
-<li>哪个公式最值得手推？</li>
-<li>哪段代码最能验证这个公式？</li>
-<li>如果实验失败，你会先排查 shape、数值、梯度还是数据？为什么？</li>
-</ol>
-<h2 id="_24">本章完成标准<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h2>
+<h2 id="_11">常见误区<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
 <ul>
-<li>能把核心公式写在白纸上，不依赖网页。</li>
-<li>能解释每个变量的形状和语义。</li>
-<li>能运行最小代码并解释输出。</li>
-<li>能指出一个常见误区和一个调试方法。</li>
-<li>能把本章内容连接到至少一个 Transformer 研究问题。</li>
+<li>把导数只当成公式表，不理解变化率。</li>
+<li>忽略函数输入输出范围。</li>
+<li>认为梯度大一定好；梯度过大可能导致数值不稳定。</li>
+<li>认为 softmax 输出都是可信概率；它只是归一化权重，未必校准。</li>
+<li>忘记链式法则中每一层都会影响最终梯度。</li>
 </ul>
+<h2 id="_12">最小练习<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<ol>
+<li>手算 <span class="arithmatex">\(f(x)=x^2+3x\)</span> 在 <span class="arithmatex">\(x=2\)</span> 的导数。</li>
+<li>用代码比较 <span class="arithmatex">\(e^1,e^3,e^5\)</span>，观察指数增长速度。</li>
+<li>计算 <code>softmax([1, 2, 3])</code> 和 <code>softmax([10, 20, 30])</code>，比较熵或最大概率。</li>
+<li>写出 <span class="arithmatex">\(L=(wx-y)^2\)</span> 对 <span class="arithmatex">\(w\)</span> 的导数。</li>
+<li>解释为什么 sigmoid 两端容易梯度小。</li>
+</ol>
+<h2 id="_13">阶段产出<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<p>整理一张“函数直觉表”：每个函数写公式、图像形状、导数、在深度学习中的用途。后续学优化和反向传播时反复回看。</p>
 
 
 
