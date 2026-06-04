@@ -1,0 +1,92 @@
+site_name: 数学基础到 Transformer 研究
+site_description: 面向深度学习与 Transformer 研究的数学基础课程
+site_author: Yang
+site_url: https://codediyi.github.io/math-foundation-site/
+
+repo_name: codediyi/math-foundation-site
+repo_url: https://github.com/codediyi/math-foundation-site
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: zh
+  logo: assets/logo.svg
+  favicon: assets/favicon.svg
+  palette:
+    - scheme: default
+      primary: blue
+      accent: deep orange
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.tabs.link
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - 首页: index.md
+  - 入门:
+      - 学习方法: getting-started/how-to-learn.md
+      - 推导与笔记: getting-started/derivation-notes.md
+      - 实验日志: getting-started/experiment-log.md
+  - 数学基础:
+      - 微积分复习: math-foundations/calculus.md
+      - 线性代数: math-foundations/linear-algebra.md
+      - 张量运算: math-foundations/tensor-computation.md
+      - 概率统计: math-foundations/probability.md
+      - 信息论: math-foundations/information-theory.md
+      - 优化与数值稳定: math-foundations/optimization.md
+      - 矩阵微分: math-foundations/matrix-calculus.md
+  - Transformer 数学:
+      - Attention 形状流: transformer-math/attention.md
+      - 多头注意力: transformer-math/multi-head.md
+      - 位置编码: transformer-math/position-encoding.md
+      - 残差与归一化: transformer-math/normalization.md
+      - 反向传播: transformer-math/backpropagation.md
+      - 高效 Attention: transformer-math/efficient-attention.md
+  - 研究强化:
+      - 分析与泛函入口: research-track/analysis-functional.md
+      - 核方法与随机矩阵: research-track/kernels-random-matrix.md
+      - 机制解释: research-track/mechanistic-interpretability.md
+      - 长上下文: research-track/long-context.md
+      - 结构改进实验: research-track/controlled-ablation.md
+  - 计划与工具:
+      - 六个月路线: plans/six-month.md
+      - 十二个月路线: plans/twelve-month.md
+      - 概念映射表: plans/concept-map.md
+      - 每周打卡模板: plans/weekly-template.md
+      - 资源索引: resources/index.md
+
