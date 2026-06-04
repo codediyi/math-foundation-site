@@ -60,9 +60,12 @@ nav:
   - 首页: index.md
   - 入门:
       - 学习方法: getting-started/how-to-learn.md
+      - 数学语言与符号: getting-started/math-language.md
+      - Python 与张量直觉: getting-started/python-numpy-pytorch.md
       - 推导与笔记: getting-started/derivation-notes.md
       - 实验日志: getting-started/experiment-log.md
   - 数学基础:
+      - 函数、图像与变化率: math-foundations/functions-and-graphs.md
       - 微积分复习: math-foundations/calculus.md
       - 线性代数: math-foundations/linear-algebra.md
       - 张量运算: math-foundations/tensor-computation.md
@@ -89,4 +92,3 @@ nav:
       - 概念映射表: plans/concept-map.md
       - 每周打卡模板: plans/weekly-template.md
       - 资源索引: resources/index.md
-

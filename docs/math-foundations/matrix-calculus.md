@@ -1,232 +1,287 @@
 # 矩阵微分
 
-> 从矩阵乘法梯度进入 attention 和 LayerNorm 反传。
+> 矩阵微分的目标不是背一堆复杂公式，而是看懂梯度如何穿过线性层、attention、softmax、残差和 LayerNorm。
 
 ## 学习目标
 
-- 掌握 gradient、Jacobian、Hessian 和链式法则。
-- 能手推 \(Y=XW\)、\(QK^\top\)、\(PV\) 的梯度。
-- 能用 autograd 验证手推结果。
+- 从标量导数过渡到向量梯度、Jacobian 和矩阵梯度。
+- 能手推 \(Y=XW\)、\(S=QK^\top\)、\(O=PV\) 的反向传播。
+- 能用上游梯度理解链式法则，而不是只写最终答案。
+- 能用 PyTorch autograd 验证手推结果。
 
-## 这一章为什么重要
+## 先从最简单的导数开始
 
-结构改进经常改变梯度路径。只会调用 autograd 无法判断某个改动为何稳定或不稳定。矩阵微分让你能读懂训练稳定性和反传分析论文。
-
-很多学习者会把这一章当成“背景知识”，但在 Transformer 里它通常直接对应某个可观察对象：张量形状、logits 尺度、attention 权重、梯度范数、训练曲线、显存访问或长上下文检索能力。学习时不要只问“这个定义是什么”，还要问“它在模型里被哪个张量承载、在哪一步影响实验结果”。
-
-## 先修与学习边界
-
-| 维度 | 要求 |
-|---|---|
-| 先修 | 会读基本代数符号，会写 Python/NumPy 或 PyTorch 最小代码 |
-| 本章重点 | 建立可用于 Transformer 分析的最小数学闭环 |
-| 暂不追求 | 完整数学专业证明体系、过度抽象的百科式展开 |
-| 验收方式 | 能解释对象、推导关键式子、写最小代码、做一个可复现实验 |
-
-## 核心概念
-
-- 标量对向量的梯度。
-- 向量对向量的 Jacobian。
-- 矩阵乘法反传。
-- softmax Jacobian。
-- 残差中的 \(I+J_f\)。
-
-## 关键公式与直觉
-
-若 \(Y=XW\)，上游梯度为 \(G_Y\)：
+如果：
 
 \[
-G_X=G_YW^\top,\qquad G_W=X^\top G_Y.
+y=x^2
 \]
 
-这是线性层、QKV 投影和 FFN 反传的基本单元。
+那么：
 
-读公式时建议固定三件事：第一，看清每个变量的形状；第二，说明每一步是线性映射、归一化、概率变换还是近似；第三，问这个公式会影响哪个实验指标。只要能做到这三点，绝大多数论文公式就不会停留在“看起来懂了”的状态。
+\[
+\frac{dy}{dx}=2x
+\]
 
-## Transformer 对应关系
+如果 loss 是 \(L=y\)，那 \(\frac{dL}{dx}=2x\)。但神经网络里 \(y\) 往往只是中间变量，真正的 loss 在后面。因此需要上游梯度。
 
-| 项目 | 内容 |
-|---|---|
-| 矩阵乘法梯度 | Q/K/V 投影和 FFN |
-| softmax Jacobian | attention 权重反传 |
-| 残差 Jacobian | 深层梯度传播 |
-| LayerNorm 梯度 | 训练稳定性分析 |
+## 什么是上游梯度
 
+假设：
 
-## 逐步例题
+\[
+y=x^2,\quad L=3y
+\]
 
-先验证 \(Y=XW\)，再把公式迁移到 \(S=QK^\top\)。若 \(S=QK^\top\)，则 \(G_Q=G_SK\)，\(G_K=G_S^\top Q\)。
+链式法则：
 
-完成例题时不要跳步。先写形状，再写等式，再写代码。若某一步无法说明形状，通常说明概念还没有真正对齐到模型实现。
+\[
+\frac{dL}{dx}=\frac{dL}{dy}\frac{dy}{dx}=3\cdot 2x
+\]
 
-## 关键代码块
+\(\frac{dL}{dy}\) 就是从后面传回来的上游梯度。矩阵微分里最重要的习惯是：先写上游梯度，再推当前变量梯度。
+
+## 向量梯度
+
+如果 \(x\in\mathbb{R}^D\)，loss 是标量 \(L\)，梯度：
+
+\[
+\nabla_x L=\left[\frac{\partial L}{\partial x_1},\ldots,\frac{\partial L}{\partial x_D}\right]
+\]
+
+梯度和 \(x\) 形状相同。代码中，如果 `x.shape == (D,)`，那么 `x.grad.shape` 也通常是 `(D,)`。
 
 ```python
 import torch
-X = torch.randn(3,4,requires_grad=True)
-W = torch.randn(4,5,requires_grad=True)
-Y = X @ W
-loss = (Y**2).sum(); loss.backward()
-with torch.no_grad():
-    GY = 2 * Y
-    print(torch.allclose(X.grad, GY @ W.T))
-    print(torch.allclose(W.grad, X.T @ GY))
+
+x = torch.tensor([1.0, 2.0, 3.0], requires_grad=True)
+L = (x ** 2).sum()
+L.backward()
+print(x.grad)  # 2*x
 ```
 
-代码块只追求最小可运行，不追求工程封装。建议复制到 notebook 后逐行打印 shape、均值、方差或误差，确认数学对象和实际张量一致。
+## Jacobian
+
+如果输出也是向量：
+
+\[
+y=f(x),\quad x\in\mathbb{R}^n,\ y\in\mathbb{R}^m
+\]
+
+Jacobian：
+
+\[
+J_{ij}=\frac{\partial y_i}{\partial x_j}
+\]
+
+它表示每个输出分量对每个输入分量的敏感度。Transformer 中完整 Jacobian 很大，通常不会显式构造，但理解它有助于分析残差和归一化。
+
+## 矩阵乘法反传：\(Y=XW\)
+
+设：
+
+\[
+X\in\mathbb{R}^{B\times D},\quad W\in\mathbb{R}^{D\times M},\quad Y=XW
+\]
+
+上游梯度：
+
+\[
+G_Y=\frac{\partial L}{\partial Y}\in\mathbb{R}^{B\times M}
+\]
+
+梯度公式：
+
+\[
+G_X=G_YW^\top
+\]
+
+\[
+G_W=X^\top G_Y
+\]
+
+检查 shape：
+
+| 梯度 | 计算 | shape |
+|---|---|---|
+| \(G_X\) | `(B,M) @ (M,D)` | `(B,D)` |
+| \(G_W\) | `(D,B) @ (B,M)` | `(D,M)` |
+
+这个公式是线性层、Q/K/V 投影、FFN 的基本反传单元。
+
+## 用 autograd 验证
+
+```python
+import torch
+
+torch.manual_seed(0)
+X = torch.randn(3, 4, requires_grad=True)
+W = torch.randn(4, 5, requires_grad=True)
+Y = X @ W
+L = (Y ** 2).sum()
+L.backward()
+
+with torch.no_grad():
+    GY = 2 * Y
+    GX = GY @ W.T
+    GW = X.T @ GY
+    print(torch.allclose(X.grad, GX))
+    print(torch.allclose(W.grad, GW))
+```
+
+这段代码的意义不是展示 PyTorch 很强，而是确认手推公式和自动求导一致。
+
+## attention logits 反传：\(S=QK^\top\)
+
+单 head 下：
+
+\[
+Q,K\in\mathbb{R}^{T\times d},\quad S=QK^\top
+\]
+
+上游梯度：
+
+\[
+G_S=\frac{\partial L}{\partial S}\in\mathbb{R}^{T\times T}
+\]
+
+梯度：
+
+\[
+G_Q=G_SK
+\]
+
+\[
+G_K=G_S^\top Q
+\]
+
+检查 shape：
+
+| 梯度 | 计算 | shape |
+|---|---|---|
+| \(G_Q\) | `(T,T) @ (T,d)` | `(T,d)` |
+| \(G_K\) | `(T,T).T @ (T,d)` | `(T,d)` |
+
+如果 logits 有缩放：
+
+\[
+S=\frac{QK^\top}{\sqrt{d}}
+\]
+
+那么 \(G_Q\) 和 \(G_K\) 也要乘 \(1/\sqrt{d}\)。
+
+## weighted sum 反传：\(O=PV\)
+
+attention 输出：
+
+\[
+O=PV
+\]
+
+其中：
+
+\[
+P\in\mathbb{R}^{T\times T},\quad V\in\mathbb{R}^{T\times d},\quad O\in\mathbb{R}^{T\times d}
+\]
+
+上游梯度 \(G_O\in\mathbb{R}^{T\times d}\)：
+
+\[
+G_P=G_OV^\top
+\]
+
+\[
+G_V=P^\top G_O
+\]
+
+这说明 value 的梯度会被 attention 权重 \(P\) 汇总，attention 权重本身也会从输出误差中得到信号。
+
+## softmax 的梯度直觉
+
+softmax：
+
+\[
+p_i=\frac{e^{z_i}}{\sum_j e^{z_j}}
+\]
+
+Jacobian：
+
+\[
+\frac{\partial p_i}{\partial z_j}=p_i(\delta_{ij}-p_j)
+\]
+
+直觉：
+
+- 一个 logit 变大，会提高自己的概率。
+- 由于概率和为 1，它也会压低其它位置概率。
+- 如果 softmax 已经非常接近 one-hot，很多位置梯度会很小。
+
+这就是 logits 尺度和 attention 缩放会影响训练稳定性的原因之一。
+
+## 残差的梯度
+
+残差结构：
+
+\[
+y=x+f(x)
+\]
+
+Jacobian：
+
+\[
+\frac{\partial y}{\partial x}=I+J_f
+\]
+
+直觉：即使 \(f\) 的梯度路径不理想，残差中的 \(I\) 也提供了一条直接路径。这是深层 Transformer 能训练的重要原因之一。
+
+## LayerNorm 为什么难
+
+LayerNorm：
+
+\[
+\operatorname{LN}(x)=\gamma\frac{x-\mu}{\sqrt{\sigma^2+\epsilon}}+\beta
+\]
+
+难点在于 \(\mu\) 和 \(\sigma^2\) 都由 \(x\) 计算得到，所以每个维度的梯度不是独立的。学习初期不需要背完整反传公式，但要知道：
+
+- 均值项会让梯度在特征维上相互耦合。
+- 方差项会改变梯度尺度。
+- \(\epsilon\) 是数值稳定项，不是可有可无。
+
+## Transformer 对应关系
+
+| 微分概念 | Transformer 中的对应 |
+|---|---|
+| 上游梯度 | loss 从输出层传回当前模块的信号 |
+| 矩阵乘法反传 | 线性层、Q/K/V、FFN |
+| softmax Jacobian | attention 权重反传 |
+| 残差 Jacobian | 深层梯度直接路径 |
+| LayerNorm 梯度 | 归一化和训练稳定性 |
 
 ## 常见误区
 
-- 不写上游梯度就推导。
-- 混淆 numerator layout 和 denominator layout。
-- 忽略 batch/head 轴。
-- 把 autograd 结果当作理解本身。
-
-## 最小练习
-
-- 手推 \(O=PV\) 的梯度。
-- 手推 \(S=QK^\top/\sqrt{d}\) 的梯度。
-- 用 autograd 验证一个 LayerNorm 简化反传。
+- 不写上游梯度，直接背最终梯度。
+- 只看公式，不检查 shape。
+- 混淆 \(G_YW^\top\) 和 \(W^\top G_Y\)。
+- 忘记 attention 缩放会影响反传尺度。
+- 认为 autograd 会算就不需要理解；调试 NaN 和结构改进时仍然需要手推直觉。
 
 ## 检查问题
 
-1. 这个概念在 Transformer 中对应哪个真实张量或实验现象？
-2. 关键公式里的每个变量形状是什么？
-3. 公式里是否隐藏了独立性、归一化、低秩、平滑性或近似假设？
-4. 如果实现错了，最可能表现为 shape error、数值爆炸、梯度异常还是指标下降？
-5. 有没有一个 20 行以内的代码片段可以验证本章直觉？
+1. 为什么矩阵微分里必须写上游梯度？
+2. \(Y=XW\) 中 \(G_X\) 和 \(G_W\) 的 shape 分别是什么？
+3. \(S=QK^\top\) 中 \(G_Q\) 为什么等于 \(G_SK\)？
+4. softmax 很尖时，梯度会有什么问题？
+5. 残差中的 \(I\) 对梯度传播有什么帮助？
+
+## 最小练习
+
+1. 手推 \(Y=XW+b\) 对 \(b\) 的梯度。
+2. 手推 \(S=QK^\top/\sqrt{d}\) 对 \(Q,K\) 的梯度。
+3. 手推 \(O=PV\) 对 \(P,V\) 的梯度。
+4. 用 autograd 验证上述三个公式。
+5. 改变 logits 缩放倍数，观察 softmax 梯度范数变化。
 
 ## 阶段产出
 
-整理一张 Transformer 常见梯度公式卡。
-
-## 学习路径衔接
-
-之后读“Attention 反向传播”。
-
-## 长章学习指南
-
-这一页不要按普通博客的方式快速扫过。建议按三轮阅读完成：第一轮只看标题、表格和公式，建立全局地图；第二轮逐段补齐变量形状和直觉；第三轮把代码复制到 notebook 中运行，记录输出和异常。完成三轮后，再回到“检查问题”部分逐条回答。
-
-### 第一轮：建立对象地图
-
-| 问题 | 记录方式 |
-|---|---|
-| 本章研究的对象是什么 | 写出 3 个关键词 |
-| 对象在 Transformer 中对应哪个模块 | 标出 attention、FFN、LN、位置编码或训练环节 |
-| 本章最核心的公式是什么 | 抄写公式并标注变量形状 |
-| 最小代码验证什么 | 写出输入、输出和期望现象 |
-
-### 第二轮：补齐推导链
-
-阅读公式时，按下面顺序补齐中间步骤：
-
-1. 写出所有变量的形状。
-2. 标出每一步是线性、非线性、归一化、近似还是采样。
-3. 写出这一步是否改变均值、方差、范数、秩或熵。
-4. 说明这一步是否影响梯度传播。
-5. 判断它是否引入额外计算、显存或延迟。
-
-这五步会把 矩阵微分 从抽象概念变成可检查的模型行为。
-
-### 第三轮：运行最小代码
-
-代码练习不要求一开始就工程化。最小版本只需要满足：
-
-- 输入是随机张量或一个小 toy 数据。
-- 输出能验证本章某个公式或直觉。
-- 打印 shape、均值、方差、范数或误差。
-- 改一个变量后能观察变化。
-
-如果代码不能解释一个数学问题，它只是示例；如果代码能支持或反驳一个假设，它才是实验。
-
-## 分层掌握标准
-
-| 层级 | 能力表现 | 自测问题 |
-|---|---|---|
-| 入门 | 能复述定义和用途 | 这个概念解决什么问题？ |
-| 可用 | 能写出公式和 shape | 变量维度是否全部明确？ |
-| 可实现 | 能写最小代码 | 输出是否符合公式预期？ |
-| 可诊断 | 能解释异常现象 | 数值、梯度或 shape 哪里可能错？ |
-| 可研究 | 能设计 controlled ablation | 哪个变量被改变，哪个变量被固定？ |
-
-学习 矩阵微分 时，至少达到“可实现”层级再进入下一章。若目标是论文研究，需要达到“可诊断”或“可研究”。
-
-## 典型调试清单
-
-当你在本章相关代码中遇到问题，优先检查下面几项：
-
-1. **shape 是否符合公式**：尤其是 batch、head、sequence、feature 轴。
-2. **数值尺度是否异常**：均值、方差、最大值、最小值是否合理。
-3. **softmax 或归一化是否在正确维度**。
-4. **mask 是否广播到正确位置**。
-5. **梯度是否存在 NaN、Inf 或突然变为 0**。
-6. **实验是否固定随机种子和关键超参**。
-7. **比较方法是否参数量、训练步数和数据一致**。
-
-## 笔记模板
-
-复制下面模板到你的 Obsidian 或 notebook：
-
-```markdown
-# 矩阵微分 学习笔记
-
-## 一句话直觉
-
-## 核心对象与形状
-
-| 对象 | 形状 | 含义 |
-|---|---|---|
-
-## 关键公式
-
-## 推导步骤
-
-## 最小代码输出
-
-## 常见错误
-
-## 与 Transformer 的关系
-
-## 本章实验结论
-```
-
-## 进阶练习
-
-- 把本章公式改写成带 batch 和 head 维度的版本。
-- 找一个相关论文公式，标注它依赖本章哪些概念。
-- 用随机输入构造一个失败案例，并解释失败原因。
-- 把最小代码改成函数，并写 2 个断言检查 shape 和数值范围。
-- 设计一个只改变一个变量的小实验，并记录结果。
-
-## 与其它章节的连接
-
-矩阵微分 不是孤立章节。你应该主动回看这些关系：
-
-| 连接方向 | 需要回看的内容 |
-|---|---|
-| 数学对象 | 线性代数、概率统计、矩阵微分 |
-| 实现对象 | 张量运算、Attention 形状流 |
-| 训练对象 | 优化与数值稳定、残差与归一化 |
-| 研究对象 | 高效 Attention、长上下文、结构改进实验 |
-
-如果某个连接读不懂，不要继续堆新概念，回到对应基础页补齐。
-
-## 复盘问题
-
-完成本章后，用不超过 300 字回答：
-
-1. 矩阵微分 最重要的一个数学对象是什么？
-2. 它在 Transformer 中对应哪个模块或现象？
-3. 哪个公式最值得手推？
-4. 哪段代码最能验证这个公式？
-5. 如果实验失败，你会先排查 shape、数值、梯度还是数据？为什么？
-
-## 本章完成标准
-
-- 能把核心公式写在白纸上，不依赖网页。
-- 能解释每个变量的形状和语义。
-- 能运行最小代码并解释输出。
-- 能指出一个常见误区和一个调试方法。
-- 能把本章内容连接到至少一个 Transformer 研究问题。
-
+整理一张“Transformer 常见反传公式卡”，包括 \(XW\)、\(QK^\top\)、softmax、\(PV\)、残差、LayerNorm。每个公式必须写 shape 和一句梯度直觉。
