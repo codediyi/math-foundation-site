@@ -835,7 +835,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        先从一个推荐系统/语言模型例子开始
+        从一个语言模型例子开始
       
     </span>
   </a>
@@ -846,7 +846,7 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        标量、向量、矩阵
+        标量、向量、矩阵、张量
       
     </span>
   </a>
@@ -857,7 +857,7 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        向量：一个点，也是一组特征
+        向量：方向、长度和相似度
       
     </span>
   </a>
@@ -890,7 +890,7 @@
   <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        秩：信息维度有多少
+        秩：真正独立的方向有多少
       
     </span>
   </a>
@@ -901,7 +901,7 @@
   <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
-        投影：把向量落到某个方向或子空间
+        投影：保留某个方向上的分量
       
     </span>
   </a>
@@ -923,7 +923,7 @@
   <a href="#svd" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SVD：任何矩阵都可以拆成方向、强度、方向
+        SVD：方向、强度、方向
       
     </span>
   </a>
@@ -931,21 +931,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#transformer" class="md-nav__link">
+  <a href="#attention-logits" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Transformer 对应关系
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#qk-attention-logits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        逐步例题：从 Q/K 到 attention logits
+        attention logits 的线代解释
       
     </span>
   </a>
@@ -957,6 +946,17 @@
     <span class="md-ellipsis">
       
         低秩近似实验
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transformer 对应关系
       
     </span>
   </a>
@@ -989,7 +989,7 @@
   <a href="#_14" class="md-nav__link">
     <span class="md-ellipsis">
       
-        最小练习
+        分层练习
       
     </span>
   </a>
@@ -1001,6 +1001,72 @@
     <span class="md-ellipsis">
       
         阶段产出
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#embedding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        教材补充：embedding 表也是矩阵
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        手推任务：线性层参数量
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notebook 实验：奇异值衰减比较
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        论文阅读提示
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        章节小测
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本章完成标准
       
     </span>
   </a>
@@ -1856,7 +1922,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        先从一个推荐系统/语言模型例子开始
+        从一个语言模型例子开始
       
     </span>
   </a>
@@ -1867,7 +1933,7 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        标量、向量、矩阵
+        标量、向量、矩阵、张量
       
     </span>
   </a>
@@ -1878,7 +1944,7 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        向量：一个点，也是一组特征
+        向量：方向、长度和相似度
       
     </span>
   </a>
@@ -1911,7 +1977,7 @@
   <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        秩：信息维度有多少
+        秩：真正独立的方向有多少
       
     </span>
   </a>
@@ -1922,7 +1988,7 @@
   <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
-        投影：把向量落到某个方向或子空间
+        投影：保留某个方向上的分量
       
     </span>
   </a>
@@ -1944,7 +2010,7 @@
   <a href="#svd" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SVD：任何矩阵都可以拆成方向、强度、方向
+        SVD：方向、强度、方向
       
     </span>
   </a>
@@ -1952,21 +2018,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#transformer" class="md-nav__link">
+  <a href="#attention-logits" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Transformer 对应关系
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#qk-attention-logits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        逐步例题：从 Q/K 到 attention logits
+        attention logits 的线代解释
       
     </span>
   </a>
@@ -1978,6 +2033,17 @@
     <span class="md-ellipsis">
       
         低秩近似实验
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transformer 对应关系
       
     </span>
   </a>
@@ -2010,7 +2076,7 @@
   <a href="#_14" class="md-nav__link">
     <span class="md-ellipsis">
       
-        最小练习
+        分层练习
       
     </span>
   </a>
@@ -2022,6 +2088,72 @@
     <span class="md-ellipsis">
       
         阶段产出
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#embedding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        教材补充：embedding 表也是矩阵
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        手推任务：线性层参数量
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notebook 实验：奇异值衰减比较
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        论文阅读提示
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        章节小测
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本章完成标准
       
     </span>
   </a>
@@ -2058,32 +2190,33 @@
 <li>能用 shape 解释 embedding、线性层、Q/K/V 投影和 attention logits。</li>
 <li>掌握向量空间、基、线性组合、秩、投影、特征值、SVD 的基本直觉。</li>
 <li>能写一个低秩近似实验，并解释奇异值曲线说明了什么。</li>
+<li>能把线性代数概念迁移到 Transformer 表示分析和结构压缩。</li>
 </ul>
-<h2 id="_3">先从一个推荐系统/语言模型例子开始<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p>假设一个 token 被表示成 4 维向量：</p>
+<h2 id="_3">从一个语言模型例子开始<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>一个 token 被 embedding 成 4 维向量：</p>
 <div class="arithmatex">\[
-x=[0.2,\,-1.1,\,0.7,\,0.4]
+x=[0.2,-1.1,0.7,0.4].
 \]</div>
-<p>这 4 个数本身不一定有人工可解释含义，但它们共同表示这个 token 在模型空间中的位置。线性层做的是：</p>
+<p>线性层：</p>
 <div class="arithmatex">\[
-y=xW+b
+y=xW+b.
 \]</div>
-<p>如果 <span class="arithmatex">\(x\in\mathbb{R}^{1\times 4}\)</span>，<span class="arithmatex">\(W\in\mathbb{R}^{4\times 3}\)</span>，那么 <span class="arithmatex">\(y\in\mathbb{R}^{1\times 3}\)</span>。普通语言：把 4 维表示重新组合成 3 维表示。</p>
+<p>若 <span class="arithmatex">\(x\in\mathbb{R}^{1\times 4}\)</span>，<span class="arithmatex">\(W\in\mathbb{R}^{4\times 3}\)</span>，输出 <span class="arithmatex">\(y\in\mathbb{R}^{1\times 3}\)</span>。普通语言：把 4 维表示重新组合成 3 维表示。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]])</span>  <span class="c1"># (1, 4)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]])</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">W</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">@</span> <span class="n">W</span> <span class="o">+</span> <span class="n">b</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (1, 3)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </code></pre></div>
-<p>线性代数的第一件事，就是看到 <code>x @ W</code> 时知道它不是神秘操作，而是多个加权求和。</p>
-<h2 id="_4">标量、向量、矩阵<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>看到 <code>x @ W</code> 时，要想到：这是多个加权求和，不是黑盒。</p>
+<h2 id="_4">标量、向量、矩阵、张量<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>对象</th>
-<th>形状</th>
+<th>shape</th>
 <th>直觉</th>
 <th>Transformer 例子</th>
 </tr>
@@ -2093,118 +2226,156 @@ y=xW+b
 <td>标量</td>
 <td><code>()</code></td>
 <td>一个数</td>
-<td>loss、学习率、一个 logits 值</td>
+<td>loss、学习率、单个 logit</td>
 </tr>
 <tr>
 <td>向量</td>
 <td><code>(D,)</code></td>
-<td>一个点或一组特征</td>
-<td>一个 token embedding</td>
+<td>一个点或特征列表</td>
+<td>token embedding、query</td>
 </tr>
 <tr>
 <td>矩阵</td>
 <td><code>(T,D)</code></td>
 <td>多个向量排成表</td>
-<td>一段序列的 hidden states</td>
+<td>一个序列的 hidden states</td>
 </tr>
 <tr>
 <td>三维张量</td>
 <td><code>(B,T,D)</code></td>
 <td>多个样本的序列表示</td>
-<td>batch 输入</td>
+<td>batch hidden states</td>
 </tr>
 <tr>
 <td>四维张量</td>
 <td><code>(B,H,T,d_h)</code></td>
-<td>多头注意力表示</td>
-<td>拆 head 后的 Q/K/V</td>
+<td>多头表示</td>
+<td>split head 后的 Q/K/V</td>
 </tr>
 </tbody>
 </table>
-<p>本章重点讲向量和矩阵；张量只是把矩阵计算批量化。</p>
-<h2 id="_5">向量：一个点，也是一组特征<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>向量可以理解为坐标：</p>
+<h2 id="_5">向量：方向、长度和相似度<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>向量：</p>
 <div class="arithmatex">\[
-x=[x_1,x_2,\ldots,x_D]
+x=[x_1,x_2,\ldots,x_D].
 \]</div>
-<p>也可以理解为特征列表。两个向量是否相似，常用点积：</p>
+<p>L2 范数：</p>
 <div class="arithmatex">\[
-x^\top y=\sum_{i=1}^{D}x_i y_i
+\|x\|_2=\sqrt{\sum_i x_i^2}.
 \]</div>
-<p>如果两个向量方向接近，点积通常较大；如果方向相反，点积可能为负。</p>
+<p>点积：</p>
+<div class="arithmatex">\[
+x^\top y=\sum_i x_i y_i.
+\]</div>
+<p>点积越大，通常说明两个向量方向越接近或范数越大。attention logits 就是 query 与 key 的点积。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>  <span class="c1"># 4</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 </code></pre></div>
-<p>attention logits 本质上就是 query 和 key 的点积。</p>
 <h2 id="_6">矩阵乘法：很多个点积<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
 <p>矩阵乘法：</p>
 <div class="arithmatex">\[
-C=AB,\quad C_{ij}=\sum_k A_{ik}B_{kj}
+C=AB,
+\quad
+C_{ij}=\sum_k A_{ik}B_{kj}.
 \]</div>
-<p>普通语言：<span class="arithmatex">\(C\)</span> 的第 <span class="arithmatex">\(i,j\)</span> 个元素，是 <span class="arithmatex">\(A\)</span> 的第 <span class="arithmatex">\(i\)</span> 行和 <span class="arithmatex">\(B\)</span> 的第 <span class="arithmatex">\(j\)</span> 列做点积。</p>
 <p>如果：</p>
 <div class="arithmatex">\[
-X\in\mathbb{R}^{T\times D},\quad W\in\mathbb{R}^{D\times M}
+X\in\mathbb{R}^{T\times D},\quad W\in\mathbb{R}^{D\times M},
 \]</div>
 <p>那么：</p>
 <div class="arithmatex">\[
-XW\in\mathbb{R}^{T\times M}
+XW\in\mathbb{R}^{T\times M}.
 \]</div>
-<p>它表示对每个 token 的 <span class="arithmatex">\(D\)</span> 维向量做同一个线性变换，得到 <span class="arithmatex">\(M\)</span> 维向量。</p>
+<p>每个 token 的 <span class="arithmatex">\(D\)</span> 维表示都被同一个 <span class="arithmatex">\(W\)</span> 映射到 <span class="arithmatex">\(M\)</span> 维。</p>
 <h2 id="_7">线性组合、基和子空间<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
 <p>线性组合：</p>
 <div class="arithmatex">\[
-a_1v_1+a_2v_2+\cdots+a_kv_k
+a_1v_1+a_2v_2+\cdots+a_kv_k.
 \]</div>
-<p>意思是用若干基础方向 <span class="arithmatex">\(v_i\)</span>，按权重 <span class="arithmatex">\(a_i\)</span> 拼出一个新向量。</p>
-<p>如果一组向量能拼出某个空间中的所有向量，它们就像这个空间的“坐标轴”。这组向量可以称为基。深度学习里的表示空间不一定有清晰人工语义，但线性层经常可以看作“换一组方向重新表达信息”。</p>
-<h2 id="_8">秩：信息维度有多少<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
-<p>矩阵的秩可以粗略理解为：矩阵里真正独立的方向有多少。</p>
-<p>如果一个矩阵的很多行/列都可以由少数方向组合出来，它就是低秩的。低秩意味着信息有冗余，也意味着可以压缩。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">U</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">V</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">A</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">V</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>  <span class="c1"># 通常不超过 3</span>
+<p>直觉：用若干基础方向拼出新向量。若一组向量能表示空间中的所有向量，它们构成一组基。</p>
+<p>在模型里，线性层可以看成把表示投影到新的方向组合上。不同 head 也可以理解为在不同子空间里计算相似度。</p>
+<h2 id="_8">秩：真正独立的方向有多少<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>矩阵的秩表示独立方向数量。低秩意味着信息有冗余，可能可以压缩。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">U</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">V</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">A</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">V</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
 </code></pre></div>
-<p>这和低秩 attention、KV cache 压缩有关：如果 attention map 或 hidden states 实际上集中在少数方向上，就可能用更少维度近似。</p>
-<h2 id="_9">投影：把向量落到某个方向或子空间<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
-<p>把向量 <span class="arithmatex">\(x\)</span> 投影到单位方向 <span class="arithmatex">\(u\)</span> 上：</p>
+<p>若 attention map 或 hidden states 有低秩结构，就可能支持低秩 attention 或 KV cache 压缩。</p>
+<h2 id="_9">投影：保留某个方向上的分量<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>投影到单位向量 <span class="arithmatex">\(u\)</span>：</p>
 <div class="arithmatex">\[
-\operatorname{proj}_u(x)=(x^\top u)u
+\operatorname{proj}_u(x)=(x^\top u)u.
 \]</div>
-<p>直觉：先用点积算 <span class="arithmatex">\(x\)</span> 在方向 <span class="arithmatex">\(u\)</span> 上有多少分量，再乘回 <span class="arithmatex">\(u\)</span>。</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">])</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">u</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">proj</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>  <span class="c1"># tensor([3., 0.])</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
 </code></pre></div>
-<p>在表示学习中，投影帮助你理解“某个方向是否承载了某种信息”。</p>
+<p>在机制解释中，投影可用于观察某个方向是否承载特定信息。</p>
 <h2 id="_10">特征值和特征向量<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
-<p>如果：</p>
+<p>若：</p>
 <div class="arithmatex">\[
-Av=\lambda v
+Av=\lambda v,
 \]</div>
-<p>那么 <span class="arithmatex">\(v\)</span> 是特征向量，<span class="arithmatex">\(\lambda\)</span> 是特征值。直觉：矩阵 <span class="arithmatex">\(A\)</span> 作用在方向 <span class="arithmatex">\(v\)</span> 上时，只拉伸或压缩，不改变方向。</p>
-<p>特征值常用于分析变换是否放大某些方向。若某些方向被过度放大，可能导致数值不稳定或梯度异常。</p>
-<h2 id="svd">SVD：任何矩阵都可以拆成方向、强度、方向<a class="headerlink" href="#svd" title="Permanent link">&para;</a></h2>
+<p>则 <span class="arithmatex">\(v\)</span> 是特征向量，<span class="arithmatex">\(\lambda\)</span> 是特征值。矩阵沿这个方向只拉伸或压缩，不改变方向。</p>
+<p>特征值可帮助分析某些方向是否被过度放大，从而影响稳定性。</p>
+<h2 id="svd">SVD：方向、强度、方向<a class="headerlink" href="#svd" title="Permanent link">&para;</a></h2>
 <p>奇异值分解：</p>
 <div class="arithmatex">\[
-A=U\Sigma V^\top
+A=U\Sigma V^\top.
 \]</div>
-<p>可以读成：</p>
+<p>读法：</p>
 <ol>
-<li><span class="arithmatex">\(V^\top\)</span>：先把输入转到一组方向上。</li>
+<li><span class="arithmatex">\(V^\top\)</span>：把输入转到一组方向上。</li>
 <li><span class="arithmatex">\(\Sigma\)</span>：按奇异值缩放每个方向。</li>
-<li><span class="arithmatex">\(U\)</span>：再转到输出空间。</li>
+<li><span class="arithmatex">\(U\)</span>：转到输出空间。</li>
 </ol>
 <p>截断 SVD：</p>
 <div class="arithmatex">\[
-A_k=U_k\Sigma_kV_k^\top
+A_k=U_k\Sigma_kV_k^\top.
 \]</div>
-<p>只保留最大的 <span class="arithmatex">\(k\)</span> 个奇异值，得到 rank-<span class="arithmatex">\(k\)</span> 近似。若误差很小，说明矩阵主要信息集中在少数方向。</p>
+<p>只保留最大的 <span class="arithmatex">\(k\)</span> 个奇异值，得到 rank-<span class="arithmatex">\(k\)</span> 近似。</p>
+<h2 id="attention-logits">attention logits 的线代解释<a class="headerlink" href="#attention-logits" title="Permanent link">&para;</a></h2>
+<p>单个 head：</p>
+<div class="arithmatex">\[
+Q,K\in\mathbb{R}^{T\times d},
+\quad
+S=QK^\top\in\mathbb{R}^{T\times T}.
+\]</div>
+<p>第 <span class="arithmatex">\(i,j\)</span> 个元素：</p>
+<div class="arithmatex">\[
+S_{ij}=q_i^\top k_j.
+\]</div>
+<p>普通语言：第 <span class="arithmatex">\(i\)</span> 个 query 对第 <span class="arithmatex">\(j\)</span> 个 key 的相似度。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">T</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">Q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">K</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">S</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">K</span><span class="o">.</span><span class="n">T</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div>
+<p>四维版本：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">Q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">K</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">S</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">K</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="_11">低秩近似实验<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">A</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">]:</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">Ak</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">k</span><span class="p">]</span> <span class="o">@</span> <span class="n">torch</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">S</span><span class="p">[:</span><span class="n">k</span><span class="p">])</span> <span class="o">@</span> <span class="n">Vh</span><span class="p">[:</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">err</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">Ak</span><span class="p">)</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="mi">4</span><span class="p">))</span>
+</code></pre></div>
+<p>如果奇异值衰减快，小 <span class="arithmatex">\(k\)</span> 也能得到低误差；如果衰减慢，低秩压缩会损失较多信息。</p>
 <h2 id="transformer">Transformer 对应关系<a class="headerlink" href="#transformer" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2228,11 +2399,11 @@ A_k=U_k\Sigma_kV_k^\top
 </tr>
 <tr>
 <td>线性变换</td>
-<td>Q/K/V/O 投影、FFN 第一层和第二层</td>
+<td>Q/K/V/O 投影、FFN</td>
 </tr>
 <tr>
 <td>秩</td>
-<td>head 冗余、低秩结构、表示压缩</td>
+<td>head 冗余、低秩结构、压缩潜力</td>
 </tr>
 <tr>
 <td>投影</td>
@@ -2244,62 +2415,13 @@ A_k=U_k\Sigma_kV_k^\top
 </tr>
 </tbody>
 </table>
-<h2 id="qk-attention-logits">逐步例题：从 Q/K 到 attention logits<a class="headerlink" href="#qk-attention-logits" title="Permanent link">&para;</a></h2>
-<p>假设单个 head：</p>
-<div class="arithmatex">\[
-Q,K\in\mathbb{R}^{T\times d}
-\]</div>
-<p>logits：</p>
-<div class="arithmatex">\[
-S=QK^\top
-\]</div>
-<p>输出 shape：</p>
-<div class="arithmatex">\[
-S\in\mathbb{R}^{T\times T}
-\]</div>
-<p>第 <span class="arithmatex">\(i,j\)</span> 个元素：</p>
-<div class="arithmatex">\[
-S_{ij}=q_i^\top k_j
-\]</div>
-<p>普通语言：第 <span class="arithmatex">\(i\)</span> 个 query 对第 <span class="arithmatex">\(j\)</span> 个 key 的相似度。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">T</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">Q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">K</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">S</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">K</span><span class="o">.</span><span class="n">T</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (4, 4)</span>
-</code></pre></div>
-<p>如果扩展到 batch 和 head：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">Q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">K</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">S</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">K</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (2, 3, 4, 4)</span>
-</code></pre></div>
-<h2 id="_11">低秩近似实验<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">A</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">]:</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">Ak</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">k</span><span class="p">]</span> <span class="o">@</span> <span class="n">torch</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">S</span><span class="p">[:</span><span class="n">k</span><span class="p">])</span> <span class="o">@</span> <span class="n">Vh</span><span class="p">[:</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">err</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">Ak</span><span class="p">)</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="mi">4</span><span class="p">))</span>
-</code></pre></div>
-<p>观察点：</p>
-<ul>
-<li><span class="arithmatex">\(k\)</span> 越大，近似误差越小。</li>
-<li>如果一个真实 attention map 的误差下降很快，说明它可能有低秩结构。</li>
-<li>如果下降很慢，强行低秩压缩可能损失信息。</li>
-</ul>
 <h2 id="_12">常见误区<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
 <ul>
-<li>认为矩阵乘法只是“套公式”，没有看成很多个点积。</li>
+<li>认为矩阵乘法只是套公式，不看成很多个点积。</li>
 <li>忘记 <span class="arithmatex">\(AB\)</span> 和 <span class="arithmatex">\(BA\)</span> 通常不相等。</li>
-<li>把特征分解和 SVD 混为一谈；SVD 适用于更一般的矩阵。</li>
-<li>只看矩阵 shape，不问每一轴语义。</li>
-<li>看到低秩就以为一定能压缩；还要看任务指标和误差。</li>
+<li>把特征分解和 SVD 混为一谈。</li>
+<li>只看 shape，不写每一轴语义。</li>
+<li>看到低秩就以为一定能压缩；还要看任务指标。</li>
 </ul>
 <h2 id="_13">检查问题<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
 <ol>
@@ -2307,18 +2429,139 @@ S_{ij}=q_i^\top k_j
 <li>attention logits 的第 <span class="arithmatex">\(i,j\)</span> 个元素表示什么？</li>
 <li>秩低意味着什么信息结构？</li>
 <li>SVD 中奇异值衰减快说明什么？</li>
-<li>如果一个 head 的 attention map 近似低秩，可能带来什么压缩机会？</li>
+<li>一个 head 的 attention map 若近似低秩，可能带来什么压缩机会？</li>
 </ol>
-<h2 id="_14">最小练习<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
-<ol>
-<li>用代码验证 <code>(T,D) @ (D,M) = (T,M)</code>。</li>
-<li>写出 <span class="arithmatex">\(QK^\top\)</span> 在四维张量下的 shape。</li>
-<li>构造一个 rank-2 矩阵，并验证它的矩阵秩。</li>
-<li>对随机矩阵和低秩矩阵分别画奇异值曲线。</li>
-<li>找一篇低秩 attention 论文，标出它压缩的是哪个矩阵。</li>
-</ol>
+<h2 id="_14">分层练习<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>任务</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基础</td>
+<td>用代码验证 <code>(T,D) @ (D,M) = (T,M)</code></td>
+</tr>
+<tr>
+<td>推导</td>
+<td>写出 <span class="arithmatex">\(QK^\top\)</span> 在四维张量下的 shape</td>
+</tr>
+<tr>
+<td>实现</td>
+<td>构造 rank-2 矩阵并验证矩阵秩</td>
+</tr>
+<tr>
+<td>诊断</td>
+<td>比较随机矩阵和低秩矩阵的奇异值曲线</td>
+</tr>
+<tr>
+<td>迁移</td>
+<td>找一篇低秩 attention 论文，标出压缩对象</td>
+</tr>
+</tbody>
+</table>
 <h2 id="_15">阶段产出<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
-<p>写一页“线性代数到 Transformer 映射表”，至少包含：embedding、linear、Q/K/V、attention logits、低秩、SVD、投影。每个条目都要写 shape 和一句直觉。</p>
+<p>写一页“线性代数到 Transformer 映射表”，包含 embedding、linear、Q/K/V、attention logits、低秩、SVD、投影。每个条目都写 shape 和一句直觉。</p>
+<h2 id="embedding">教材补充：embedding 表也是矩阵<a class="headerlink" href="#embedding" title="Permanent link">&para;</a></h2>
+<p>词表 embedding 可以看成矩阵：</p>
+<div class="arithmatex">\[
+E\in\mathbb{R}^{V\times D}.
+\]</div>
+<p>第 <span class="arithmatex">\(i\)</span> 行 <span class="arithmatex">\(E_i\)</span> 是第 <span class="arithmatex">\(i\)</span> 个 token 的向量。查表操作不是矩阵乘法实现的核心，但数学上可以理解为 one-hot 向量乘 embedding 表：</p>
+<div class="arithmatex">\[
+x_i=\operatorname{onehot}(i)^\top E.
+\]</div>
+<p>这说明 embedding lookup 也是线性代数对象。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">V</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">E</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">token_id</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">lookup</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">token_id</span><span class="p">]</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">one_hot</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">one_hot</span><span class="p">(</span><span class="n">token_id</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">V</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="n">matmul</span> <span class="o">=</span> <span class="n">one_hot</span> <span class="o">@</span> <span class="n">E</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">lookup</span><span class="p">,</span> <span class="n">matmul</span><span class="p">))</span>
+</code></pre></div>
+<h2 id="_16">手推任务：线性层参数量<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h2>
+<p>若线性层把 <span class="arithmatex">\(D\)</span> 维映射到 <span class="arithmatex">\(M\)</span> 维：</p>
+<div class="arithmatex">\[
+y=xW+b.
+\]</div>
+<p>参数量：</p>
+<div class="arithmatex">\[
+D\times M+M.
+\]</div>
+<p>Transformer 中 Q/K/V/O 四个投影若都是 <span class="arithmatex">\(D\to D\)</span>，参数量约为：</p>
+<div class="arithmatex">\[
+4D^2+4D.
+\]</div>
+<p>这能帮助你读懂模型参数量来自哪里。</p>
+<h2 id="notebook">Notebook 实验：奇异值衰减比较<a class="headerlink" href="#notebook" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">A_random</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">A_low</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">@</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">A</span> <span class="ow">in</span> <span class="p">[(</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">A_random</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;low_rank&#39;</span><span class="p">,</span> <span class="n">A_low</span><span class="p">)]:</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">s</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svdvals</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="n">ratio</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span> <span class="o">/</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ratio</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">decimals</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+</code></pre></div>
+<p>低秩矩阵的奇异值会快速衰减，随机矩阵通常衰减更慢。</p>
+<h2 id="_17">论文阅读提示<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h2>
+<p>读到下面词汇时，优先回到线代直觉：</p>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>应关注的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>subspace</td>
+<td>哪个表示子空间被使用或压缩</td>
+</tr>
+<tr>
+<td>rank bottleneck</td>
+<td>信息是否被低维限制</td>
+</tr>
+<tr>
+<td>spectral norm</td>
+<td>变换最大放大倍数</td>
+</tr>
+<tr>
+<td>orthogonal</td>
+<td>方向是否互不干扰</td>
+</tr>
+<tr>
+<td>projection</td>
+<td>保留哪个方向的信息</td>
+</tr>
+<tr>
+<td>low-rank</td>
+<td>用少数方向近似原矩阵</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_18">章节小测<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h2>
+<ol>
+<li>embedding lookup 如何写成 one-hot 矩阵乘法？</li>
+<li>Q/K/V 投影为什么是线性变换？</li>
+<li>多头注意力为什么可以看成多个子空间上的相似度计算？</li>
+<li>rank 低一定好吗？什么时候可能有害？</li>
+<li>奇异值曲线能支持什么压缩判断？</li>
+</ol>
+<h2 id="_19">本章完成标准<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h2>
+<ul>
+<li>能解释 embedding、linear、Q/K/V 的矩阵形式。</li>
+<li>能手算线性层参数量。</li>
+<li>能用 SVD 比较随机矩阵和低秩矩阵。</li>
+<li>能把低秩、投影、子空间连接到 attention 分析。</li>
+</ul>
 
 
 
